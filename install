@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# install libcurl dependency
-sudo apt-get update
-sudo apt-get install libcurl14-gnutls-dev
-
-
