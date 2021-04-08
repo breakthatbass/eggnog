@@ -25,7 +25,7 @@ void print_usage(void);
 char *concat_url(char *year, char *day, char task);
 
 // get session id from ~/.santa file or create it if it doesn't exist
-char *get_session_id(void);
+char *get_session_id(char *file_path);
 
 // get puzzle input from AOC servers based on user's session id
 void get_input(char *url, char *session_id);
