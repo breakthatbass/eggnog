@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# colors for printing
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+BLUE='\033[1;36m'
+NC='\033[0m' # No Color
+
+TEST_FILES=$(ls *.c)
+FLAGS='-lcurl'
+DEPENDENCIES='../aoc.c'
+
+
+#echo $TEST_FILES
+
+for i in *_tests.c
+do
+    echo "  building $i"
+    if gcc $i $DEPENDENCIES $FLAGS -o "${i%.c}.out"; then
+        echo "  ${GREEN}build succeeded!${NC}"
+        echo "running..."
+        ./"${i%.c}.out"
+    else
+        echo "$i build failed..."
+    fi
+done
+
+rm *.out
