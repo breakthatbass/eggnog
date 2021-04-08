@@ -34,12 +34,14 @@ void get_input(char *url, char *session_id);
 void init_string(struct string *s);
 
 // store http results in the string struct
-size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s);
+size_t write_func(void *ptr, size_t size, size_t nmemb, struct string *s);
 
 // parse the html results that are returned
-char *parse_results(char *s);
+char *parse_results(char *s, int debug);
+
+char *get_answer(char *s);
 
 // submit puzzle answer to AOC servers
-void submit_answer(char *url, char *session_id, char *body);
+char *submit_answer(char *url, char *session_id, char *body);
 
 #endif
