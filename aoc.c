@@ -11,7 +11,7 @@ void print_usage(void)
 // build url for http request. task is submit answer or get puzzle input
 char *concat_url(char *year, char *day, char task)
 {
-    static char url[100];
+    char *url = malloc(sizeof(char)*55);
 
     strcpy(url, "https://adventofcode.com/");
 	strcat(url, year);
@@ -29,15 +29,16 @@ char *concat_url(char *year, char *day, char task)
 
 
 // get session id from ~/.santa file or create it if doesn't exist
-char *get_session_id(void)
+char *get_session_id(char *file_path)
 {
-    static char session[MAXBUF];
+    static char session[SESSION];
     char file[BUF];
     FILE *fp;
     int len;
 
     // file path for file containing session id
-    strcat(strcpy(file, getenv("HOME")), "/.santa");
+    strcpy(file, file_path);
+    strcat(file, "/.santa");
 
     if(access(file, F_OK) == 0) {
         // session id file exists
@@ -61,7 +62,7 @@ char *get_session_id(void)
         }
 
         fprintf(fp, "%s", session);
-        printf("successfully created '.santa' file in %s directory\n", getenv("HOME"));
+        printf("successfully created '.santa' file in %s directory\n", file_path);
     }
 
     // trim \n if it exists at end of string
