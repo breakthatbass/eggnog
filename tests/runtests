@@ -6,22 +6,18 @@ GREEN='\033[1;32m'
 BLUE='\033[1;36m'
 NC='\033[0m' # No Color
 
-TEST_FILES=$(ls *.c)
 FLAGS='-lcurl'
 DEPENDENCIES='../aoc.c'
 
-
-#echo $TEST_FILES
-
 for i in *_tests.c
 do
-    echo "  building $i"
+    echo -e "- building ${BLUE}$i${NC}"
     if gcc $i $DEPENDENCIES $FLAGS -o "${i%.c}.out"; then
-        echo "  ${GREEN}build succeeded!${NC}"
-        echo "running..."
+        echo -e "- build ${GREEN}succeeded!${NC}"
+        echo "- running file"
         ./"${i%.c}.out"
     else
-        echo "$i build failed..."
+        echo "$i build ${RED}failed${NC}..."
     fi
 done
 
