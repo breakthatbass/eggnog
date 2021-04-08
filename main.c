@@ -5,18 +5,22 @@
 int main(int argc, char **argv)
 {
     int opt;
-	char url[BUF];
-	//char session_id[SESSION];
+	char *url;
+	char session_id[SESSION];
 
     // year and day is required, these vars keep track
     int d = 0;
     int y = 0;
+    int submit = 0;
+    int input = 0;
+    //int puzzle = 0;
 
     char *year = NULL;
     char *day = NULL;
+    char *answer = NULL;
 
      // options on left side of ':' take args, on right, no args
-    while ((opt = getopt(argc, argv, "y:d:sip")) != -1) {
+    while ((opt = getopt(argc, argv, "y:d:s:ip")) != -1) {
         switch(opt) {
         // need args
         case 'y':
@@ -36,15 +40,18 @@ int main(int argc, char **argv)
         // no args
         case 's':
             // submit an answer
-            printf("the -s flag has been used\n");
+            answer = optarg;
+            submit = 1;
             break;
         case 'i':
             // get input for puzzle
             printf("the -i flag has been used\n");
+            input = 1;
             break;
         case 'p':
             // get puzzle directions
             printf("the -p flag has been used\n");
+            //puzzle = 1;
         default:
             print_usage();
             return 1;
@@ -53,23 +60,19 @@ int main(int argc, char **argv)
     // make sure a year and day has been given
     if (!d || !y) print_usage();
 
-
-    strcpy(url, concat_url(year, day, 'i'));
-    printf("URL: %s\n", url);
+    // cant get input and submit
+    if (submit && input) {
+        print_usage();
+    } else if (submit && !input) {
+        url = concat_url(year, day, 's');
+        strcpy(session_id, get_session_id(getenv("HOME")));
+        
+    } else if ((!submit && input) || (!submit && !input)) {
+        url = concat_url(year, day, 'i');
+        strcpy(session_id, get_session_id(getenv("HOME")));
+        get_input(url, session_id);
+    }
+   
+    free(url);
     return 0;
 }
-/*
-	// put together the url
-	strcpy(url, "https://adventofcode.com/");
-	strcat(url, argv[1]);
-	strcat(url, "/day/");
-	strcat(url, argv[2]);
-	strcat(url, "/input");
-
-	strcpy(session_id, get_session_id());
-
-	get_input(url, session_id);
-
-    return 0;
-}
-*/
