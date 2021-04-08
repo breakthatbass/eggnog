@@ -139,7 +139,7 @@ char *parse_results(char *s, int debug)
         FILE *fp;
         long length;
 
-        fp = fopen("wronganswer.txt", "r");
+        fp = fopen("tests/wronganswer.txt", "r");
         assert(fp);
 
         fseek(fp, 0, SEEK_END);
