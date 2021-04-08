@@ -97,3 +97,133 @@ void get_input(char *url, char *session_id)
 		curl_easy_cleanup(curl);
 	}
 }
+
+
+// setup struct string *s to be used to store a string and a size
+void init_string(struct string *s)
+{
+    s->len = 0;
+    s->ptr = malloc(s->len+1);
+    if (s->ptr == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
+    s->ptr[0] = '\0';
+}
+
+
+size_t write_func(void *ptr, size_t size, size_t nmemb, struct string *s)
+{
+    size_t new_len = s->len + (size*nmemb);
+    s->ptr = realloc(s->ptr, new_len+1);
+    if (s->ptr == NULL) {
+        fprintf(stderr, "realloc failed\n");
+        exit(EXIT_FAILURE);
+    }
+    memcpy(s->ptr+s->len, ptr, size*nmemb);
+    s->ptr[new_len] = '\0';
+    s->len = new_len;
+
+    return size*nmemb;
+}
+
+
+// results are a bunch of html
+// we just want it to say whether the answer was right or not
+char *parse_results(char *s, int debug)
+{
+    char *buf, *tmp, *t;
+
+    if (debug) {
+        #include <assert.h>
+        FILE *fp;
+        long length;
+
+        fp = fopen("wronganswer.txt", "r");
+        assert(fp);
+
+        fseek(fp, 0, SEEK_END);
+        length = ftell(fp);
+        fseek(fp, 0, SEEK_SET);
+        buf = malloc(sizeof(char)*length);
+        assert(buf);
+
+        // read the entire file into buffer
+        if (buf) fread(buf, 1, length, fp);
+        fclose(fp);
+    }
+
+    if (strstr(buf, "<main>\n<article><p>")) {
+        // get pointer to this part of html
+        tmp = strstr(buf, "<main>\n<article><p>");
+        // move ahread past the <p>
+        tmp+=19;
+        // now we parse what we want from the remaining html
+        t = get_answer(s);
+        free(buf);
+        free(s);
+        return t;
+    }
+    return NULL;
+}
+
+
+char *get_answer(char *s)
+{
+    char *buf, *p;
+    int n, i;
+
+    // we want everything up until the double space
+    p = strstr(s, "  ");
+    n = p-s; // the distance until the "  "
+
+    buf = malloc(sizeof(char)*n);
+    if (buf == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
+    i = 0;
+    while (i <= n) {
+        *buf++ = *s++;
+        i++;
+    }
+    *buf = '\0';
+    buf-=i;
+    s-=i;
+    return buf;
+}
+
+
+char *submit_answer(char *url, char *session_id, char *body)
+{
+    CURL *curl;
+    CURLcode res;
+    struct string s;
+    char cookie[MAXBUF] = "session=";
+
+    init_string(&s);
+
+    // we need the session id to be predicated with 'session='
+    strcat(cookie, session_id);
+
+    curl = curl_easy_init();
+
+    if (curl) {
+        // POST request of our answer to the AOC servers
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_POST, 1L);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);
+        curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
+
+        // save the html results into a string so we can parse it
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+        res = curl_easy_perform(curl);
+
+        if (res != CURLE_OK)
+            fprintf(stderr, "curl resquest failed\nerror: %s\n", curl_easy_strerror(res));
+        curl_easy_cleanup(curl);
+    }
+    return s.ptr;
+}
