@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-lcurl -Wall -g -fsanitize=address
-FILES=main.c
-BIN=santa
+FILES=main.c aoc.c
+BIN=xmas
 # get the os
 UNAME_S := $(shell uname)
 
@@ -21,6 +21,10 @@ endif
 # sorry windows
 	mkdir -p /usr/local/bin
 	sudo cp $< /usr/local/bin/$(BIN)
+
+.PHONY: tests
+tests:
+	sh test.sh
 
 clean:
 	rm $(BIN)
