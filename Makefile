@@ -22,5 +22,9 @@ endif
 	mkdir -p /usr/local/bin
 	sudo cp $< /usr/local/bin/$(BIN)
 
+.PHONY: tests
+tests:
+	sh test.sh
+
 clean:
 	rm $(BIN)
