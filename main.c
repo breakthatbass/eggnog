@@ -7,6 +7,7 @@ int main(int argc, char **argv)
     int opt;
 	char *url;
 	char session_id[SESSION];
+    char *html_response;
 
     // year and day is required, these vars keep track
     int d = 0;
@@ -64,8 +65,13 @@ int main(int argc, char **argv)
     if (submit && input) {
         print_usage();
     } else if (submit && !input) {
+        char header[45] = "level=1&answer=";
+        strcat(header, answer);
         url = concat_url(year, day, 's');
         strcpy(session_id, get_session_id(getenv("HOME")));
+        html_response = submit_answer(url, session_id, header);
+        
+        //printf("%s\n", html_response);
         
     } else if ((!submit && input) || (!submit && !input)) {
         url = concat_url(year, day, 'i');
