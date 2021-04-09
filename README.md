@@ -1,25 +1,41 @@
-# Santa
-## Advent of Code puzzle input downloader
+# xmas
 
-Santa is a tool that allows you to download AOC puzzle inputs through the command line for Linux and Mac OS.  
+### xmas is a tool that allows you to download AOC puzzle inputs and submit your answers through the command line for Linux and Mac OS.  
 
 ## Installation
 ```
 make install
 ```
+The first time you use it, it's going to prompt you for your session id.  
+The get that, log in on the AOC website, inspect element with your browser tools, click the 'storage' tab, then click the 'cookies' tab. You will see you session id there.  
 
-The first time you use it, it's going to prompt you for you session id.  
-The get that, log in on the AOC website, inspect element with your browser tools, click the 'storage' tab on the top, then click the 'cookies' tab on the left. You will see you session id there.  
-
-The program will save your session id in your home directory in a file called `.santa`.  
+The program will save your session id in your home directory in a file called `.xmas`.  
 
 ## Usage
+### getting puzzle inputs
+By default `xmas` requires a year and a day as arguments. This will retrieve the puzzle input for that day and year. You can also use the `-i` flag to indicate you want the input. 
 ```
-santa <year> <day>   # something like: santa 2020 5  
+xmas -y <year> -d <day>   # something like: santa -y 2020 -d 5  
 ```
-Make use of pipes and redirection to use the puzzle inputs in any way you like.
+Make use of pipes and redirection to use the puzzle inputs in any way you like.  
 
+### submitting an answer to a puzzle
+To submit an answer use the `-s` flag with your answer as an argument. By default, it will attempt to answer part 1 of any puzzle unless indicated with the `-l` flag. Use `-l 2` to answer part 2 of any puzzle.
+```
+xmas -y <year> -d <day> -s <answer> -l <part>
+
+# examples
+xmas -y 2020 -d 5 -s 12345
+xmas -y 2020 -d 5 -s 6789 -l 2
+```
+### getting usage
+For now just use `xmas` by itself and it will print the usage.
+
+## Tests
+Run tests from root directory. The tests use files to test the functions rather than hitting up the AOC servers a bunch.
+```
+make tests
+```
 ## TODO
-1. make a submit feature
-2. add an option to save input to file without redirection
-3. add an option to download puzzle directions
+1. add an option to download puzzle directions
+2. add '-h' flag to print usage
