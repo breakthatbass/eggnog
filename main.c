@@ -10,23 +10,11 @@ int main(int argc, char **argv)
 	char session_id[SESSION];
     char *html_response;
 
-    //char *a = debug_html("tests/rightanswer.txt");
-    //char *b = debug_html("tests/wronganswer.txt");
-
-    //printf("%s\n", b);
-
-    //free(b);
-
-    //exit(0);
-
     // year and day is required, these vars keep track
     int d = 0;
     int y = 0;
     int submit = 0;
     int input = 0;
-    //int part = 0;
-    //char level = 0;
-    //int puzzle = 0;
 
     char *year = NULL;
     char *day = NULL;
@@ -34,7 +22,7 @@ int main(int argc, char **argv)
     char level[2] = "1"; //part 1 by default
 
      // options on left side of ':' take args, on right, no args
-    while ((opt = getopt(argc, argv, "y:d:s:l:ip")) != -1) {
+    while ((opt = getopt(argc, argv, "y:d:s:l:i")) != -1) {
         switch(opt) {
         // need args
         case 'y':   // required
@@ -69,13 +57,8 @@ int main(int argc, char **argv)
             break;
         case 'i':
             // get input for puzzle
-            printf("the -i flag has been used\n");
             input = 1;
             break;
-        case 'p':
-            // get puzzle directions
-            printf("the -p flag has been used\n");
-            //puzzle = 1;
         default:
             print_usage();
             return 1;
