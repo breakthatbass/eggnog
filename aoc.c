@@ -8,10 +8,22 @@ void print_usage(void)
 }
 
 
-// build url for http request. task is submit answer or get puzzle input
+/*
+*   concat_url:
+*   build url for http request.
+*   year and day is the year and day for the puzzle
+*
+*   task: i, s. i = get puzzle input, s = submit answer
+*/
 char *concat_url(char *year, char *day, char task)
 {
-    char *url = malloc(sizeof(char)*55);
+    if (task != 'i' && task != 's') return NULL;
+
+    char *url = malloc(sizeof(char)*BUF);
+    if (url == NULL) {
+        fprintf(stderr, "concat_url: malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
 
     strcpy(url, "https://adventofcode.com/");
 	strcat(url, year);
@@ -21,14 +33,20 @@ char *concat_url(char *year, char *day, char task)
     // i = get puzzle input
     // s = submit an answer
     if (task == 'i') strcat(url, "/input");
-    else if (task == 's') strcat(url, "/answer");
-    else return NULL;
+    else strcat(url, "/answer");
 
     return url;
 }
 
 
-// get session id from ~/.santa file or create it if doesn't exist
+/*  get session id from ~/.xmas file or create it if it doesn't exist
+*   
+*   file_path param is for testing.
+*   the actual program only deals with $HOME/.xmas
+*
+*   RETURN VALUE:
+*   string that holds the session id
+*/
 char *get_session_id(char *file_path)
 {
     static char session[SESSION];
@@ -38,7 +56,7 @@ char *get_session_id(char *file_path)
 
     // file path for file containing session id
     strcpy(file, file_path);
-    strcat(file, "/.santa");
+    strcat(file, "/.xmas");
 
     if(access(file, F_OK) == 0) {
         // session id file exists
@@ -62,7 +80,7 @@ char *get_session_id(char *file_path)
         }
 
         fprintf(fp, "%s", session);
-        printf("successfully created '.santa' file in %s directory\n", file_path);
+        printf("successfully created '.xmas' file in %s directory\n", file_path);
     }
 
     // trim \n if it exists at end of string
@@ -75,12 +93,12 @@ char *get_session_id(char *file_path)
 }
 
 
-// attempt to contact servers and return puzzle input
+// get puzzle input from AOC servers based on user's session id
 void get_input(char *url, char *session_id)
 {
 	CURL *curl;
 	CURLcode res;
-	char cookie[MAXBUF] = "session=";
+	char cookie[SESSION] = "session=";
 
 	// we need the session id to be predicated with 'session='
 	strcat(cookie, session_id);
@@ -111,7 +129,8 @@ void init_string(struct string *s)
     s->ptr[0] = '\0';
 }
 
-
+// store http results in the string struct
+// s->ptr needs to be freed when done
 size_t write_func(void *ptr, size_t size, size_t nmemb, struct string *s)
 {
     size_t new_len = s->len + (size*nmemb);
@@ -128,73 +147,82 @@ size_t write_func(void *ptr, size_t size, size_t nmemb, struct string *s)
 }
 
 
-// results are a bunch of html
-// we just want it to say whether the answer was right or not
-char *parse_results(char *s, int debug)
+/*
+*   debug_html:
+*
+*   this fills a variable with an html response that is pre-stored in a file
+*   to use for debugging and testing the parse_results function.
+*   this is to prevent the constant calls to the AOC servers.
+*   files to use for this funtion are in the tests directory.
+*/
+char *debug_html(char *file)
 {
-    char *buf, *tmp, *t;
+    #include <assert.h>
+    FILE *fp;
+    long length;
+    char *buf;
 
-    if (debug) {
-        #include <assert.h>
-        FILE *fp;
-        long length;
+    fp = fopen(file, "r");
+    assert(fp);
 
-        fp = fopen("wronganswer.txt", "r");
-        assert(fp);
+    fseek(fp, 0, SEEK_END);
+    length = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    buf = malloc(sizeof(char)*length);
+    assert(buf);
 
-        fseek(fp, 0, SEEK_END);
-        length = ftell(fp);
-        fseek(fp, 0, SEEK_SET);
-        buf = malloc(sizeof(char)*length);
-        assert(buf);
+    // read the entire file into buffer
+    fread(buf, 1, length, fp);
+    buf[length] = '\0';
+    fclose(fp);
 
-        // read the entire file into buffer
-        if (buf) fread(buf, 1, length, fp);
-        fclose(fp);
-    }
+    return buf;
+}
 
-    if (strstr(buf, "<main>\n<article><p>")) {
+
+/*  
+*   parse_results:
+*
+*   parse the html results that is returned from the request
+*   a NULL check should be required for this function since that is what is returned
+*   if it is unable to parse what it needs from the string
+*   
+*   on success, the result will have to be freed
+*   on failure, nothing gets allocated
+*/
+char *parse_results(char *s)
+{
+    char *tmp, *response_len, *buf;
+    int n;
+
+    if (strstr(s, "<main>\n<article><p>")) {
         // get pointer to this part of html
-        tmp = strstr(buf, "<main>\n<article><p>");
+        tmp = strstr(s, "<main>\n<article><p>");
+        //free(s);
         // move ahread past the <p>
         tmp+=19;
-        // now we parse what we want from the remaining html
-        t = get_answer(s);
-        free(buf);
-        free(s);
-        return t;
+
+        // no matter what comes back as a response, there is always a double space ending the string.
+        // this just gets a length we can use to pull just what we want
+        response_len = strstr(tmp, "  ");
+        n = response_len - tmp;
+
+        buf = malloc(sizeof(char)*n+2);
+        if (buf == NULL) {
+            fprintf(stderr, "parse_results: malloc failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        strncpy(buf, tmp, n);
+        buf[n] = '\0';
+
+        return buf;
     }
     return NULL;
 }
 
 
-char *get_answer(char *s)
-{
-    char *buf, *p;
-    int n, i;
-
-    // we want everything up until the double space
-    p = strstr(s, "  ");
-    n = p-s; // the distance until the "  "
-
-    buf = malloc(sizeof(char)*n);
-    if (buf == NULL) {
-        fprintf(stderr, "malloc failed\n");
-        exit(EXIT_FAILURE);
-    }
-    i = 0;
-    while (i <= n) {
-        *buf++ = *s++;
-        i++;
-    }
-    *buf = '\0';
-    buf-=i;
-    s-=i;
-    return buf;
-}
-
-
-char *submit_answer(char *url, char *session_id, char *body)
+char *submit_answer(char *url, char *session_id, char *header)
 {
     CURL *curl;
     CURLcode res;
@@ -212,7 +240,7 @@ char *submit_answer(char *url, char *session_id, char *body)
         // POST request of our answer to the AOC servers
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, header);
         curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
 
         // save the html results into a string so we can parse it
@@ -225,5 +253,6 @@ char *submit_answer(char *url, char *session_id, char *body)
             fprintf(stderr, "curl resquest failed\nerror: %s\n", curl_easy_strerror(res));
         curl_easy_cleanup(curl);
     }
+    // return the string that holds the html response
     return s.ptr;
 }
