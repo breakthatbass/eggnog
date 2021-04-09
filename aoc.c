@@ -171,6 +171,7 @@ char *debug_html(char *file)
     buf = malloc(sizeof(char)*length);
     assert(buf);
 
+<<<<<<< HEAD
     // read the entire file into buffer
     fread(buf, 1, length, fp);
     buf[length] = '\0';
@@ -178,6 +179,10 @@ char *debug_html(char *file)
 
     return buf;
 }
+=======
+        fp = fopen("tests/wronganswer.txt", "r");
+        assert(fp);
+>>>>>>> 30fbffd687337b8c38eae1612fed515f92defac8
 
 
 /*  

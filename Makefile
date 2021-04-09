@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-lcurl -Wall -g -fsanitize=address
+CFLAGS=-lcurl -Wall -g #-fsanitize=address
 FILES=main.c aoc.c
 BIN=xmas
 # get the os

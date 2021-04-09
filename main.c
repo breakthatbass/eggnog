@@ -1,11 +1,12 @@
 #include <getopt.h>
 
 #include "aoc.h"
+#define DEBUG 1
 
 int main(int argc, char **argv)
 {
     int opt;
-	char *url;
+	char *url = NULL;
 	char session_id[SESSION];
     char *html_response;
 
@@ -95,6 +96,7 @@ int main(int argc, char **argv)
 
         // send the answer and get back the HTML
         html_response = submit_answer(url, session_id, header);
+<<<<<<< HEAD
 
         // parse the HTML just to say whether we passed or failed
         char *results = parse_results(html_response);
@@ -108,6 +110,18 @@ int main(int argc, char **argv)
             exit(EXIT_FAILURE);
         }
 
+=======
+        
+        char *results = parse_results(html_response, DEBUG);
+        if (results)
+            printf("%s\n", results);
+        else {
+            fprintf(stderr, "problem fetching html\n");
+            exit(EXIT_FAILURE);
+        }
+        //printf("%s\n", html_response);
+        
+>>>>>>> 30fbffd687337b8c38eae1612fed515f92defac8
     } else if ((!submit && input) || (!submit && !input)) {
         url = concat_url(year, day, 'i');
         strcpy(session_id, get_session_id(getenv("HOME")));
