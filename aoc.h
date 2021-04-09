@@ -36,12 +36,23 @@ void init_string(struct string *s);
 // store http results in the string struct
 size_t write_func(void *ptr, size_t size, size_t nmemb, struct string *s);
 
-// parse the html results that are returned
-char *parse_results(char *s, int debug);
+/*  
+*   parse_results:    
+*
+*   parse the html results that is returned from the request
+*   a NULL check should be required for this function since that is what is returned
+*   if it is unable to parse what it needs from the string
+*   
+*   on success, the results will have to be freed
+*   on failure, nothing gets allocated
+*/
+char *parse_results(char *s);
 
 char *get_answer(char *s);
 
 // submit puzzle answer to AOC servers
 char *submit_answer(char *url, char *session_id, char *body);
+
+char *debug_html(char *file);
 
 #endif
