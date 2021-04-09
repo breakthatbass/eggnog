@@ -3,7 +3,17 @@
 
 void print_usage(void)
 {
-	fprintf(stderr, "santa <year> <day>\n");
+    char *usage = "usage: xmas [-y, -d, -s, -i, -l]\
+        \n\nrequired flags: -y, -d\
+\
+        \n-y: year\
+        \n-d: day\
+        \n\noptional flags: -s, -i, -l\
+\
+        \n-s: submit -> submit puzzle answer. requires answer as arg\
+        \n-i: input -> this is the default setting if only -d, -y are used\
+        \n-l: level -> indicates which puzzle part for -s. defaults to 1";
+	fprintf(stderr, "%s\n", usage);
 	exit(EXIT_FAILURE);
 }
 
