@@ -17,7 +17,7 @@ do
         echo "- running file"
         ./"${i%.c}.out"
     else
-        echo "$i build ${RED}failed${NC}..."
+        echo -e "$i build ${RED}failed${NC}..."
     fi
 done
 
