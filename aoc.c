@@ -66,7 +66,7 @@ char *get_session_id(char *file_path)
 
     // file path for file containing session id
     strcpy(file, file_path);
-    strcat(file, "/.xmas");
+    strcat(file, "/.xmas/session");
 
     if(access(file, F_OK) == 0) {
         // session id file exists
