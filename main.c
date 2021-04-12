@@ -1,6 +1,7 @@
 #include <getopt.h>
 
 #include "aoc.h"
+#include "cache.c"
 #define DEBUG 1
 
 int main(int argc, char **argv)
@@ -20,6 +21,8 @@ int main(int argc, char **argv)
     char *day = NULL;
     char *answer = NULL;
     char level[2] = "1"; //part 1 by default
+
+    char *home_dir = getenv("HOME");
 
      // options on left side of ':' take args, on right, no args
     while ((opt = getopt(argc, argv, "y:d:s:l:i")) != -1) {
@@ -75,7 +78,7 @@ int main(int argc, char **argv)
         strcat(header, answer);
 
         url = concat_url(year, day, 's');
-        strcpy(session_id, get_session_id(getenv("HOME")));
+        strcpy(session_id, get_session_id(home_dir));
 
         // send the answer and get back the HTML
         html_response = submit_answer(url, session_id, header);
@@ -93,9 +96,24 @@ int main(int argc, char **argv)
         }
 
     } else if ((!submit && input) || (!submit && !input)) {
-        url = concat_url(year, day, 'i');
-        strcpy(session_id, get_session_id(getenv("HOME")));
-        get_input(url, session_id);
+        // puzzle input requested
+        // build path
+        char input_path[BUF];
+        strcpy(input_path, home_dir);
+        strcat(input_path, "/.xmas/");
+        strcat(input_path, year);
+        strcat(input_path, "/");
+
+        char *input_buf = check_cache(input_path, day);
+        if (input_buf == NULL) {
+            // not in the cache
+            url = concat_url(year, day, 'i');
+            strcpy(session_id, get_session_id(home_dir));
+            get_input(url, session_id);
+        } else {
+            // already have it in cache
+            printf("%s", input_buf);
+        }
     } else {
         //something went wrong somewhere
         print_usage();
