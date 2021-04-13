@@ -1,6 +1,6 @@
 # xmas
 
-### xmas is a tool that allows you to download AOC puzzle inputs and submit your answers through the command line for Linux and Mac OS.  
+### xmas is a tool that allows you to download [AOC](https://adventofcode.com) puzzle inputs and submit your answers through the command line for Linux and Mac OS.  
 
 ## Installation
 ```
