@@ -109,7 +109,10 @@ int main(int argc, char **argv)
             // not in the cache
             url = concat_url(year, day, 'i');
             strcpy(session_id, get_session_id(home_dir));
-            get_input(url, session_id);
+            char *s = get_input(url, session_id);
+            printf("%s\n", s);
+            add_to_cache(input_path, year, day, s);
+            free(s);
         } else {
             // already have it in cache
             printf("%s", input_buf);
