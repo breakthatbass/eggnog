@@ -104,11 +104,14 @@ char *get_session_id(char *file_path)
 
 
 // get puzzle input from AOC servers based on user's session id
-void get_input(char *url, char *session_id)
+char *get_input(char *url, char *session_id)
 {
 	CURL *curl;
 	CURLcode res;
 	char cookie[SESSION] = "session=";
+    struct string s;
+
+    init_string(&s);
 
 	// we need the session id to be predicated with 'session='
 	strcat(cookie, session_id);
@@ -118,12 +121,18 @@ void get_input(char *url, char *session_id)
 	if (curl) {
 		curl_easy_setopt(curl, CURLOPT_URL, url);
 		curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
-		res = curl_easy_perform(curl);
 
+        // save the input into a string
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+		res = curl_easy_perform(curl);
 		if (res != CURLE_OK)
 			fprintf(stderr, "request failed. error: %s\n", curl_easy_strerror(res));
+            exit(EXIT_FAILURE);
 		curl_easy_cleanup(curl);
 	}
+    return s.ptr;
 }
 
 
@@ -261,6 +270,7 @@ char *submit_answer(char *url, char *session_id, char *header)
 
         if (res != CURLE_OK)
             fprintf(stderr, "curl resquest failed\nerror: %s\n", curl_easy_strerror(res));
+            exit(EXIT_FAILURE);
         curl_easy_cleanup(curl);
     }
     // return the string that holds the html response

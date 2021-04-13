@@ -45,7 +45,7 @@ char *concat_url(char *year, char *day, char task);
 char *get_session_id(char *file_path);
 
 // get puzzle input from AOC servers based on user's session id
-void get_input(char *url, char *session_id);
+char *get_input(char *url, char *session_id);
 
 /*
 *   init_string and write_func are used to store the html response from the AOC servers
@@ -84,7 +84,7 @@ char *submit_answer(char *url, char *session_id, char *body);
 *   files to use for this funtion are in the tests directory.
 *
 *   RETURN VALUE:
-*   returns the contents of a file as a string
+*   returns the contents of a file as a string - needs to be freed
 */
 char *debug_html(char *file);
 
