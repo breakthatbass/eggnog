@@ -20,7 +20,11 @@ else
 endif
 # sorry windows
 	mkdir -p /usr/local/bin
-	sudo cp $< /usr/local/bin/$(BIN)
+	cp $< /usr/local/bin/$(BIN)
+
+uninstall: $(BIN)
+	rm /usr/local/bin/$(BIN)
+	rm -rf ~/.xmas
 
 .PHONY: tests
 tests:
