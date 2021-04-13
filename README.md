@@ -11,6 +11,11 @@ The get that, log in on the AOC website, inspect element with your browser tools
 
 The program saves all inputs in a local cache directory (`~/.xmas`) so that it only contacts the servers once per puzzle input. The session id is also stored in that directory in a file called `sessionid`.  
 
+## Uninstall
+```
+make uninstall
+```
+This deletes the program and also deletes the cache folder and session id.
 
 ## Usage
 ### getting puzzle inputs
