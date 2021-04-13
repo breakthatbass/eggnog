@@ -59,3 +59,34 @@ char *check_cache(char *path, char *day)
 	// file doesn't exist
 	return NULL;
 }
+
+// check if year dir exists, if not create it
+// open a file called 'day'
+// print the input string into it
+// close file
+void add_to_cache(char *path, char *year, char *day, char *input)
+{
+	FILE *fp;
+	
+	check_dir(path);
+	strcat(path, day);
+
+	fp = fopen(path, "w");
+	if (fp == NULL) {
+		fprintf(stderr, "add_to_cache: problem opening file: %s\n", path);
+		exit(EXIT_FAILURE);
+	}
+	fprintf(fp, "%s", input);
+	fclose(fp);
+}
+/*
+int main()
+{
+	char p[BUF];
+	strcpy(p, getenv("HOME"));
+	strcat(p, "/.xmas");
+
+	add_to_cache(p, "2020", "2", "make me poo");
+	return 0;
+}
+*/

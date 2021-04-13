@@ -122,14 +122,15 @@ char *get_input(char *url, char *session_id)
 		curl_easy_setopt(curl, CURLOPT_URL, url);
 		curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
 
+        printf("HERE 4\n");
         // save the input into a string
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
 		res = curl_easy_perform(curl);
+    
 		if (res != CURLE_OK)
 			fprintf(stderr, "request failed. error: %s\n", curl_easy_strerror(res));
-            exit(EXIT_FAILURE);
 		curl_easy_cleanup(curl);
 	}
     return s.ptr;

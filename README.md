@@ -9,7 +9,8 @@ make install
 The first time you use it, it's going to prompt you for your session id.  
 The get that, log in on the AOC website, inspect element with your browser tools, click the 'storage' tab, then click the 'cookies' tab. You will see you session id there.  
 
-The program will save your session id in your home directory in a file called `.xmas`.  
+The program saves all inputs in a local cache directory (`~/.xmas`) so that it only contacts the servers once per puzzle input. The session id is also stored in that directory in a file called `sessionid`.  
+
 
 ## Usage
 ### getting puzzle inputs
