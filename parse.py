@@ -15,10 +15,10 @@ import sys
 from bs4 import BeautifulSoup
 
 try:
-    f = sys.argv[1]     # file to read from
+    html = sys.argv[1]     # file to read from
     day = sys.argv[2]   # name to call the cache file
 except:
-    print(f'parse.py: problem opening provided file: {f}')
+    print('parse.py: must provide html to parse')
     sys.exit(1)
 
 # open file to write to
@@ -28,13 +28,7 @@ except:
     print(f'parse.py: problem opening provided cache file: {day}')
     sys.exit(1)
 
-
-try:
-    with open(f) as fp:
-        soup = BeautifulSoup(fp, 'html.parser')
-except:
-    print('poo on you. file doesnt work')
-    sys.exit(1)
+soup = BeautifulSoup(html, 'html.parser')
 
 body = soup.find_all('article')
 
@@ -50,6 +44,5 @@ for i in answer:
     if not line.find('Your puzzle answer'):
         cache_file.write(line)
         cache_file.write('\n')
-
-fp.close()
+        
 cache_file.close()
