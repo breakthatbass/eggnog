@@ -14,6 +14,7 @@ further requests for the directions will be read from the cache
 import sys
 from bs4 import BeautifulSoup
 
+
 try:
     html = sys.argv[1]     # file to read from
     day = sys.argv[2]   # name to call the cache file

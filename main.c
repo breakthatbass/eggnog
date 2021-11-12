@@ -2,7 +2,7 @@
 
 #include "aoc.h"
 #include "cache.c"
-#define DEBUG 1
+#define DEBUG 0
 
 int main(int argc, char **argv)
 {
@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     int y = 0;
     int submit = 0;
     int input = 0;
+    int puzzle_directions = 0;
 
     char *year = NULL;
     char *day = NULL;
@@ -25,7 +26,7 @@ int main(int argc, char **argv)
     char *home_dir = getenv("HOME");
 
      // options on left side of ':' take args, on right, no args
-    while ((opt = getopt(argc, argv, "y:d:s:l:i")) != -1) {
+    while ((opt = getopt(argc, argv, "y:d:s:l:ip")) != -1) {
         switch(opt) {
         // need args
         case 'y':   // required
@@ -61,6 +62,10 @@ int main(int argc, char **argv)
         case 'i':
             // get input for puzzle
             input = 1;
+            break;
+        case 'p':
+            // get directions for puzzle
+            puzzle_directions = 1;
             break;
         default:
             print_usage();
@@ -113,6 +118,8 @@ int main(int argc, char **argv)
             printf("%s\n", s);
             add_to_cache(input_path, year, day, s);
             free(s);
+        } else if (puzzle_directions) {
+            
         } else {
             // already have it in cache
             printf("%s", input_buf);

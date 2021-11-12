@@ -85,7 +85,9 @@ char *get_session_id(char *file_path)
         // create .santa file and add session id to it
         fp = fopen(file, "w");
         if (fp == NULL) {
+            perror("fopen");
             fprintf(stderr, "problem creating session id file\n");
+            printf("FILE PATH: %s\n", file);
             exit(EXIT_FAILURE);
         }
 

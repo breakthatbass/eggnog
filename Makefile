@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-lcurl -Wall -g #-fsanitize=address
 FILES=main.c aoc.c
-BIN=xmas
+BIN=nog
 # get the os
 UNAME_S := $(shell uname)
 
