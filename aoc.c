@@ -271,9 +271,10 @@ char *submit_answer(char *url, char *session_id, char *header)
 
         res = curl_easy_perform(curl);
 
-        if (res != CURLE_OK)
+        if (res != CURLE_OK) {
             fprintf(stderr, "curl resquest failed\nerror: %s\n", curl_easy_strerror(res));
             exit(EXIT_FAILURE);
+        }
         curl_easy_cleanup(curl);
     }
     // return the string that holds the html response
