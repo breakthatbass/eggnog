@@ -1,34 +1,25 @@
 CC=gcc
-CFLAGS=-lcurl -Wall -g #-fsanitize=address
-FILES=main.c aoc.c
+CFLAGS=-lcurl -Wall -g -fsanitize=address
+SRCS=$(wildcard src/*.c)
 BIN=nog
-# get the os
-UNAME_S := $(shell uname)
+OBJDIR=build
+OBJ=$(wildcard $(ODJDIR)/*.o)
+OBJECTS=$(patsubst src/%.cpp, $(OBJDIR)/%.o, $(SRCS))
 
-all: $(BIN)
+all=$(BIN)
 
-$(BIN): $(FILES)
-	$(CC) $(FILES) $(CFLAGS) -o $(BIN)
+$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-install: $(BIN)
-	@echo 'installing dependencies: libcurl'
-ifeq ($(UNAME_S), Linux)
-	sudo apt-get update
-	sudo apt-get install curl
-else
-	brew install curl
-endif
-# sorry windows
-	mkdir -p /usr/local/bin
-	cp $< /usr/local/bin/$(BIN)
+$(BIN): $(OBJECTS)
+	$(CC) $(OBJECTS) $(CFLAGS) -o $(BIN)
 
-uninstall: $(BIN)
-	rm /usr/local/bin/$(BIN)
-	rm -rf ~/.xmas
 
-.PHONY: tests
-tests:
-	sh test.sh
+$(OBJDIR):
+	mkdir -p $@
 
 clean:
 	rm $(BIN)
+	rm -rf $(OBJDIR)
+	rm -rf *.dSYM
+
