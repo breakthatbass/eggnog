@@ -11,7 +11,7 @@ static char *get_html_test(void)
 	FILE *fp;
 	char *return_str;
 	long size;
-	char *path = "tests/html.txt";
+	char *path = "tests/directions_done.html";
 	
 	fp = fopen(path, "r");
 	assert(fp);
@@ -68,3 +68,53 @@ char *parse_results(char *s)
     return NULL;
 }
 
+// keep track if we're in an HTML tag or not
+static int IN_TAG = 0;
+
+char *parse_dir(char *html)
+{
+	char *tmp, *tmp2;
+	const char *START = "class=\"day-desc\"><h2>";
+	size_t startlen = strlen(START);
+
+	tmp = strstr(html, START);
+	tmp+=startlen;
+
+	char *s = malloc(202020);
+
+	//printf("%s", tmp);
+	int i = 0;
+	while (*tmp) {
+
+		if (*tmp == '<') {
+			IN_TAG = 1;
+			tmp++;
+		} else if (*tmp == '>') {
+			IN_TAG = 0;
+			tmp++;
+		} else if (IN_TAG == 0) {
+			*s = *tmp;
+			s++;
+			tmp++;
+			i++;
+		} else {
+			tmp++;
+			continue;
+		}
+	}
+	s-=i;
+	// now just make our way through the html keeping what we want
+	printf("%s", s);
+	return s;
+}
+
+int main()
+{
+	char *d = get_html_test();
+
+
+	char *s = parse_dir(d);
+
+	printf("%s", s);
+	return 0;
+}
