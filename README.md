@@ -15,7 +15,7 @@ nog -y <YEAR> -d <DAY>
 
 options:
     -i          -> puzzle input (default)
-    -p          -> puzzle directions
+    -p          -> puzzle directions (coming soon)
     -s <ANSWER> -> submit an answer
     -l <LEVEL>  -> indicate part one or part two (default 1)
 
