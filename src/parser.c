@@ -108,6 +108,9 @@ char *parse_dir(char *html)
 	return s;
 }
 
+
+/*
+ // quick tests
 int main()
 {
 	char *d = get_html_test();
@@ -118,3 +121,4 @@ int main()
 	printf("%s", s);
 	return 0;
 }
+*/
