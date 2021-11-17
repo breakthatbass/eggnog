@@ -9,7 +9,6 @@
 
 #define SML_BUF 5
 
-//static char *cookie = "53616c7465645f5f9fd72c151396ac153bfbe74d91a60304e33a95e41d3fa6e4b12552eac7445a0108728700a1b3bc20";
 static char *u = "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input";
 
 
