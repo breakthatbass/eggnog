@@ -1,6 +1,10 @@
 # eggnog 🎄
-
 `eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs and submit your answers through the command line for Linux and Mac OS. ...And soon to download puzzle directions too.
+#
+<img src="eggnog.gif" height="200" alt="Clark Griswold"> 
+
+#
+
 
 ## Installation
 ```
