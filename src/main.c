@@ -9,8 +9,6 @@
 
 #define SML_BUF 5
 
-static char *u = "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input";
-
 
 int main(int argc, char **argv)
 {
@@ -36,9 +34,29 @@ int main(int argc, char **argv)
 	// variables to store returned data
 	char *data = NULL;
 	char *session_id = NULL;
+
+	int v = 0;
+	int h = 0;
 	
 
-	while ((opt = getopt(argc, argv, "y:d:l:s:pi")) != -1) {
+	while (1) {
+
+		int option_index = 0;
+		// make use of full word arguments
+		static struct option long_options[] = {
+			{"year", required_argument, NULL, 'y'},
+			{"day", required_argument, NULL, 'd'},
+			{"part", required_argument, NULL, 'l'},
+			{"submit", optional_argument, NULL, 's'},
+			{"input", no_argument, NULL, 'i'},
+			{"help", no_argument, NULL, 'h'},
+			{"version", no_argument, NULL, 'v'},
+			{NULL, 0, NULL, 0}
+		};
+
+		opt = getopt_long(argc, argv, ":y:d:l:s::iphv", long_options, &option_index);
+		if (opt == -1) break;
+
 		switch(opt) {
 		
 		case 'y':
@@ -57,7 +75,10 @@ int main(int argc, char **argv)
 		
 		case 's':
 			// submit and answer
-			submit_answer = optarg;
+			if (optarg == NULL) {
+				printf("It works\n");
+			} else printf("optarg is %s\n", optarg);
+			//submit_answer = optarg;
 			s = 1;
 			break;
 
@@ -67,13 +88,24 @@ int main(int argc, char **argv)
 			break;
 
 		case 'i':
-         // get input for puzzle
-         i = 1;
-         break;
+			// get input for puzzle
+			i = 1;
+			break;
+
 		case 'l':
 			// indicate part one or two
 			level = optarg;
 			l = 1;
+			break;
+
+		case 'h':
+			print_usage();
+			h = 1;
+			break;
+
+		case 'v':
+			print_version();
+			v = 1;
 			break;
         
 		default:
@@ -82,11 +114,10 @@ int main(int argc, char **argv)
 		}
 	}
 
-	// variables to hold the day and year if it's advent
-	// they have to be global since there's memory issues with
-	// passing in locally scoped variables in check_cache().
-	// these prevent us from having to allocate memory on the heap
-	// and therefore needing to free year and day only sometimes
+	if (h || v) exit(EXIT_SUCCESS);
+	
+	// these variables are for preventing having to free the year
+	// day variables only somtimes
 	char year_stack[SML_BUF] = {0};
 	char day_stack[SML_BUF] = {0};
 
@@ -94,7 +125,7 @@ int main(int argc, char **argv)
 	char *flag = handle_flags(p, i, s);
 
 	if (flag == NULL) {
-		fprintf(stderr, "error: only one or zero of: -i, -d, -s\n");
+		fprintf(stderr, "error: only one or zero of: -i, -pd, -s\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -111,6 +142,8 @@ int main(int argc, char **argv)
 			sprintf(year_stack, "%d", adv[0]);
 			sprintf(day_stack, "%d", adv[2]);
 
+			// point to those stack variables so we dont have to allocate
+			// dynamically allocate memory for them
 			year = &(*year_stack);
 			day = &(*day_stack);
 
@@ -120,9 +153,24 @@ int main(int argc, char **argv)
 			exit(EXIT_FAILURE);
 		}
 
+	} else {
+	// this branch prevent needless server hits that just return 404
+	if ((y && !d) || (!y && d)) {
+			print_usage();
+			exit(EXIT_FAILURE);
+		}
+		
+		int r = check_input(year, day);
+		if (r == 1) {
+			fprintf(stderr, "error: not a valid day\n");
+			exit(EXIT_FAILURE);
+		} else if (r == 2) {
+			fprintf(stderr, "error: not a valid year\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 
-	// we do our thing
+
 	data = check_cache(year, day, flag);
 	
 	if (data == NULL) {
@@ -130,18 +178,16 @@ int main(int argc, char **argv)
 		char *url = build_url(year, day, flag);
 
 		if (strcmp(flag, "i") == 0) {
-#if DEBUG
-			data = get_input(u, NULL);
-#else
+		
 			data = get_input(url, session_id);
-#endif
 		
 		} else if (strcmp(flag, "p") == 0) {
 
 			printf("p - puzzle directions coming soon\n");
-			return 0;
+			exit(EXIT_SUCCESS);
 
 		} else {
+			
 			// build url for submitting
 			char header[URL_BUF] = "level=";
 			if (level) strcat(header, level);
