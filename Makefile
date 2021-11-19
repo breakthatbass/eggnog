@@ -18,6 +18,10 @@ $(BIN): $(OBJECTS)
 $(OBJDIR):
 	mkdir -p $@
 
+
+parser:
+	$(CC) $(CFLAGS) src/parser.c -o p
+
 clean:
 	rm $(BIN)
 	rm -rf $(OBJDIR)
