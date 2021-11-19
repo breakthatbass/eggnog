@@ -1,5 +1,5 @@
 # eggnog 🎄
-`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs and submit your answers through the command line for Linux and Mac OS. ...And soon to download puzzle directions too.
+`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs and submit your answers through the command line for Linux and Mac OS.
 #
 <img src="eggnog.gif" height="200" alt="Clark Griswold"> 
 
@@ -11,7 +11,6 @@
 ```
 make install
 ```
-
 
 ## Usage
 ```
@@ -44,15 +43,15 @@ If no options are supplied, input is assumed.
 ```
 
 ### Example usage
-Get input for year 2020 day 1:
-```
-nog -y 2020 -d 1
-```
-Submit an answer for year 2020 day 1 part 1:
-```
-nog -y 2020 -d 1 --submit=1234
-```
-Or, read from `stdin` to provide your answer:
-```
-nog -y 2020 -d 1 -s
-```
+Get input for year 2020 day 1:  
+- `nog -y 2020 -d 1`  
+
+Submit an answer for year 2020 day 1 part 1:  
+- `nog -y 2020 -d 1 --submit=1234`  
+
+Or, read from `stdin` to provide your answer:  
+- `nog -y 2020 -d 1 -s`  
+
+Submit an answer for part 2:  
+- `nog -y 2020 -d 1 --part=2 -s`
+
