@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <string.h>
 
@@ -34,25 +35,6 @@ static unsigned int *get_date(void)
 	return d;
 }
 
-/**
- * print_usage
- *
- * @desc: print usage and exit
- * */
-void print_usage(void)
-{
-    char *usage = "usage: nog [-y, -d, -s, -i, -l]\
-        \n\nrequired flags: -y, -d\
-\
-        \n-y: year\
-        \n-d: day\
-        \n\noptional flags: -s, -i, -l\
-\
-        \n-s: submit -> submit puzzle answer. requires answer as arg\
-        \n-i: input -> this is the default setting if only -d, -y are used\
-        \n-l: level -> indicates which puzzle part for -s. defaults to 1";
-	fprintf(stderr, "%s\n", usage);
-}
 
 /**
  * make_url
@@ -158,3 +140,82 @@ char *build_url(char *year, char *day, char *task)
 
 	return url;
 }
+
+
+/**
+ * check_input
+ *
+ * @desc: if year and day are supplied, make sure they are valid.
+ *
+ * @param: `year` - the year argument supplied by client.
+ * @param: `day` - the day argument supplied by client.
+ *
+ * @return: 0 if `year` & `day` are valid. `1` if day is invalid. `2` if year is invalid.
+ * */
+int check_input(char *year, char *day)
+{
+	int d = atoi(day);
+	int y = atoi(year);
+	unsigned int *date = get_date();
+
+	if (d < 1 || d > 25) return 1;
+	
+
+	if (
+		(date[0] < 2015) ||
+		(y == date[0] && date[1] < 12) ||
+		(y > date[0]))
+			return 2;
+	
+	return 0;
+}
+
+
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define BOLDRED "\033[1m\033[31m"
+#define BOLDGREEN "\033[1m\033[32m"
+#define RESET "\033[0m"
+
+/**
+ * print_usage
+ *
+ * @desc: print usage and exit
+ * */
+void print_usage(void)
+{
+	printf("%seggnog%s %s\n", BOLDGREEN, RESET, VERSION);
+	printf("\n🎅🏻 🎅🏻 🎅🏻\n\n");
+	printf("Download inputs and submit answers to Advent of Code puzzles in your terminal\n");
+	
+	printf("\n%sUSAGE:%s\n", BOLDRED, RESET);
+	printf("    nog [--day=<day> --year=<year>] [OPTION] \n");
+	
+	printf("\nRequired unless Advent is happening - latest puzzle will automatically\n");
+	printf("be returned.\n");
+
+	printf("    %s-y <year>%s, %s--year=<year>%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tThe year of the puzzle you want to do.\n");
+
+	printf("    %s-d <day>%s, %s--day=<day>%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tThe day of the puzzle you want to do.\n");
+
+	printf("%sOPTIONS:%s\n", BOLDRED, RESET);
+
+	printf("If no options are supplied, %sinput%s is assumed.\n", BOLDGREEN, RESET);
+	printf("    %s-i%s, %s--input%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tDownload puzzle input.\n");
+	
+	printf("    %s-s <answer>%s, %s--submit=<answer>%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tsubmit an answer to a puzzle.\n");
+
+	printf("    %s-l <puzzle part>%s, %s--level=<puzzle part>%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tIndicate whether submitting an answer to part 1 or part 2 of a puzzle.\n");
+	printf("\tIf left out, part 1 is assumed. Required for submitting part 2 answers.\n");
+}
+
+void print_version(void)
+{
+	printf("eggnog %s\n", VERSION);
+}
+
