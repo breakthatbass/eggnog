@@ -75,10 +75,10 @@ int main(int argc, char **argv)
 		
 		case 's':
 			// submit and answer
-			if (optarg == NULL) {
-				printf("It works\n");
-			} else printf("optarg is %s\n", optarg);
-			//submit_answer = optarg;
+			if (!optarg) {
+				printf("opt: %s\n", optarg);
+				submit_answer = optarg;
+			} 
 			s = 1;
 			break;
 
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 			break;
         
 		default:
-            print_usage();
+            print_error(opt);
             return 1;
 		}
 	}
@@ -187,13 +187,10 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 
 		} else {
-			
-			// build url for submitting
-			char header[URL_BUF] = "level=";
-			if (level) strcat(header, level);
-			else strcat(header, "1");
-			strcat(header, "&answer=");
-			strcat(header, submit_answer);
+
+			char *header = prep_submit(submit_answer, level);
+			printf("\n\n%s\n", header);
+			return 0;
 
 			data = submit_puzzle_answer(url, session_id, header); 
 		}

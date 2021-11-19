@@ -42,6 +42,10 @@ char *build_url(char *year, char *day, char *task);
 int check_input(char *year, char *day); 
 // print current version
 void print_version(void);
+// print error info if invalid arg is used
+void print_error(char f);
+// prep the url for submitting an answer
+char *prep_submit(char *answer, char *lev);
 
 /****************************************************************************
  *		parser.c														    *

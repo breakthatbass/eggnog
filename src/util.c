@@ -170,12 +170,43 @@ int check_input(char *year, char *day)
 	return 0;
 }
 
+char *prep_submit(char *answer, char *lev)
+{
+	// build url for submitting
+	static char header[URL_BUF] = "level=";
+	if (lev) strcat(header, lev);
+	else strcat(header, "1");
+	strcat(header, "&answer=");
+	if (answer)
+		strcat(header, answer);
+	else {
+		// we read from stdin
+		char buf[URL_BUF] = {0};
+		fgets(buf, URL_BUF, stdin);
+		buf[strcspn(buf, "\r\n")] = 0;
+
+		printf("%s\n", buf);
+		strcat(header, buf);
+	}
+	return header;
+}
+
 
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 #define BOLDRED "\033[1m\033[31m"
 #define BOLDGREEN "\033[1m\033[32m"
 #define RESET "\033[0m"
+
+void print_error(char f)
+{
+	printf("%serror:%s '-%c' is not a valid argument\n\n", BOLDRED, RESET, f);
+
+	printf("\n%sUSAGE:%s\n", BOLDRED, RESET);
+	printf("    nog [--day=<day> --year=<year>] [OPTION] \n");
+
+	printf("\nTry %s--help%s or %s-h%s for more information\n", BOLDGREEN, RESET, BOLDGREEN, RESET);
+}
 
 /**
  * print_usage
@@ -186,7 +217,7 @@ void print_usage(void)
 {
 	printf("%seggnog%s %s\n", BOLDGREEN, RESET, VERSION);
 	printf("\n🎅🏻 🎅🏻 🎅🏻\n\n");
-	printf("Download inputs and submit answers to Advent of Code puzzles in your terminal\n");
+	printf("Download inputs and submit answers to Advent of Code puzzles in your terminal.\n");
 	
 	printf("\n%sUSAGE:%s\n", BOLDRED, RESET);
 	printf("    nog [--day=<day> --year=<year>] [OPTION] \n");
@@ -194,28 +225,41 @@ void print_usage(void)
 	printf("\nRequired unless Advent is happening - latest puzzle will automatically\n");
 	printf("be returned.\n");
 
-	printf("    %s-y <year>%s, %s--year=<year>%s\n", GREEN, RESET, GREEN, RESET);
+	/** YEAR **/
+	printf("\n    %s-y <year>%s, %s--year=<year>%s\n", GREEN, RESET, GREEN, RESET);
 	printf("\tThe year of the puzzle you want to do.\n");
 
-	printf("    %s-d <day>%s, %s--day=<day>%s\n", GREEN, RESET, GREEN, RESET);
+	// DAY
+	printf("\n    %s-d <day>%s, %s--day=<day>%s\n", GREEN, RESET, GREEN, RESET);
 	printf("\tThe day of the puzzle you want to do.\n");
 
 	printf("%sOPTIONS:%s\n", BOLDRED, RESET);
 
+	// INPUT
 	printf("If no options are supplied, %sinput%s is assumed.\n", BOLDGREEN, RESET);
-	printf("    %s-i%s, %s--input%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\n    %s-i%s, %s--input%s\n", GREEN, RESET, GREEN, RESET);
 	printf("\tDownload puzzle input.\n");
 	
-	printf("    %s-s <answer>%s, %s--submit=<answer>%s\n", GREEN, RESET, GREEN, RESET);
-	printf("\tsubmit an answer to a puzzle.\n");
+	// SUBMIT
+	printf("\n    %s-s%s, %s--submit=<answer>%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tsubmit an answer to a puzzle. If no answer is supplied, read from\n");
+	printf("\t%sstdin%s. Using '%s-s%s' automatically reads from %sstdin%s.\n", BOLDRED, RESET, RED, RESET, BOLDRED, RESET);
 
-	printf("    %s-l <puzzle part>%s, %s--level=<puzzle part>%s\n", GREEN, RESET, GREEN, RESET);
+	// LEVEL
+	printf("\n    %s-l <puzzle part>%s, %s--level=<puzzle part>%s\n", GREEN, RESET, GREEN, RESET);
 	printf("\tIndicate whether submitting an answer to part 1 or part 2 of a puzzle.\n");
 	printf("\tIf left out, part 1 is assumed. Required for submitting part 2 answers.\n");
+
+	// VERSION
+	printf("\n    %s-v%s, %s--version%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tPrint version.\n");
+
+	// HELP
+	printf("\n    %s-h%s, %s--help%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tPrint this info and quit.\n");
 }
 
 void print_version(void)
 {
 	printf("eggnog %s\n", VERSION);
 }
-
