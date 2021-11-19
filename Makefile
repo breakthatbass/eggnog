@@ -18,9 +18,9 @@ $(BIN): $(OBJECTS)
 $(OBJDIR):
 	mkdir -p $@
 
+install: $(BIN)
+	cp $(BIN) /usr/local/bin/
 
-parser:
-	$(CC) $(CFLAGS) src/parser.c -o p
 
 clean:
 	rm $(BIN)

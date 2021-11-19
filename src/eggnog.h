@@ -1,8 +1,6 @@
 #ifndef _AOC_H_
 #define _AOC_H_
 
-#include <curl/curl.h>
-
 #define DEBUG 0
 #define DEBUG_URL "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input"
 

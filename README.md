@@ -5,6 +5,7 @@
 
 #
 
+`eggnog` creates a local cache in the `$HOME` directory called `.eggnog`.
 
 ## Installation
 ```
@@ -13,18 +14,45 @@ make install
 
 
 ## Usage
-If Advent of Code is happening, year and day are not required. It automatically assumes the latest puzzle.
 ```
-nog -y <YEAR> -d <DAY>
-
-options:
-    -i          -> puzzle input (default)
-    -p          -> puzzle directions (coming soon)
-    -s <ANSWER> -> submit an answer
-    -l <LEVEL>  -> indicate part one or part two (default 1)
-
-    note: if submitting an asnwer for part 2 `-l 2` is required.
+nog [--day=<day> --year=<year>] [OPTION] 
 ```
 
+Day & year are required unless Advent is happening - latest puzzle will automatically
+be returned.
+```
+    -y <year>, --year=<year>
+	The year of the puzzle you want to do.
 
-`eggnog` creates a local cache in the `$HOME` directory called `.eggnog`.
+    -d <day>, --day=<day>
+	The day of the puzzle you want to do.
+```
+
+**Options**:
+If no options are supplied, input is assumed.
+```
+    -i, --input
+	Download puzzle input.
+
+    -s, --submit=<answer>
+	submit an answer to a puzzle. If no answer is supplied, read from
+	stdin. Using '-s' automatically reads from stdin.
+
+    -l <puzzle part>, --level=<puzzle part>
+	Indicate whether submitting an answer to part 1 or part 2 of a puzzle.
+	If left out, part 1 is assumed. Required for submitting part 2 answers.
+```
+
+### Example usage
+Get input for year 2020 day 1:
+```
+nog -y 2020 -d 1
+```
+Submit an answer for year 2020 day 1 part 1:
+```
+nog -y 2020 -d 1 --submit=1234
+```
+Or, read from `stdin` to provide your answer:
+```
+nog -y 2020 -d 1 -s
+```
