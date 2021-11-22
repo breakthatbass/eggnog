@@ -46,10 +46,10 @@ void print_error(char f);
 char *prep_submit(char *answer, char *lev);
 
 /****************************************************************************
- *		parser.c														    *
+ *		parse.c														    *
  ***************************************************************************/
 
-// parse out response string from HTML
-char *parse_results(char *s);
+// print puzzle directions in a colorful and pretty way
+void pretty_print(char *html);
 
 #endif

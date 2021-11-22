@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 			{"part", required_argument, NULL, 'l'},
 			{"submit", optional_argument, NULL, 's'},
 			{"input", no_argument, NULL, 'i'},
+			{"directions", no_argument, NULL, 'p'},
 			{"help", no_argument, NULL, 'h'},
 			{"version", no_argument, NULL, 'v'},
 			{NULL, 0, NULL, 0}
@@ -178,27 +179,24 @@ int main(int argc, char **argv)
 		char *url = build_url(year, day, flag);
 
 		if (strcmp(flag, "i") == 0) {
-		
+			// puzzle input
 			data = get_input(url, session_id);
 		
 		} else if (strcmp(flag, "p") == 0) {
-
-			printf("p - puzzle directions coming soon\n");
-			exit(EXIT_SUCCESS);
+			// puzzle directions
+			data = get_input(url, session_id);
 
 		} else {
 
 			char *header = prep_submit(submit_answer, level);
-			printf("\n\n%s\n", header);
-			return 0;
-
 			data = submit_puzzle_answer(url, session_id, header); 
 		}
 
 		add_to_cache(data, year, day, flag);
-	} 
-		
-	printf("%s", data);
+	} else printf("in cache\n");
+
+	if (p) pretty_print(data);	
+	else printf("%s", data);
 	free(data);
 	
 	return 0;
