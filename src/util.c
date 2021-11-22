@@ -239,6 +239,10 @@ void print_usage(void)
 	printf("If no options are supplied, %sinput%s is assumed.\n", BOLDGREEN, RESET);
 	printf("\n    %s-i%s, %s--input%s\n", GREEN, RESET, GREEN, RESET);
 	printf("\tDownload puzzle input.\n");
+
+	printf("\n    %s-p%s, %s--directions%s\n", GREEN, RESET, GREEN, RESET);
+	printf("\tGet puzzle directions\n");
+
 	
 	// SUBMIT
 	printf("\n    %s-s%s, %s--submit=<answer>%s\n", GREEN, RESET, GREEN, RESET);
