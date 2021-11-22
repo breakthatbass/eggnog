@@ -33,6 +33,9 @@ If no options are supplied, input is assumed.
     -i, --input
 	Download puzzle input.
 
+	-p, --directions
+	Get puzzle directions.
+
     -s, --submit=<answer>
 	submit an answer to a puzzle. If no answer is supplied, read from
 	stdin. Using '-s' automatically reads from stdin.
@@ -41,16 +44,21 @@ If no options are supplied, input is assumed.
 	Indicate whether submitting an answer to part 1 or part 2 of a puzzle.
 	If left out, part 1 is assumed. Required for submitting part 2 answers.
 ```
+Getting the puzzle input will print it to the terminal in the same way it would with `curl`.
+The purpose of that is because many advent of code solutions read from `stdin` rather than a hardcoded file name in the code.
+
 
 ### Example usage
 Get input for year 2020 day 1:  
-- `nog -y 2020 -d 1`  
+- `nog -y 2020 -d 1`
+- or save to a file --> `nog -y 2020 -d 1 > input.txt`
+- or pipe it into your program -->   `nog -y 2020 -d 1 | ./myprogram`
 
 Submit an answer for year 2020 day 1 part 1:  
 - `nog -y 2020 -d 1 --submit=1234`  
 
-Or, read from `stdin` to provide your answer:  
-- `nog -y 2020 -d 1 -s`  
+Or read from `stdin` to provide your answer:  
+- `./myprogram | nog -y 2020 -d 1 -s`  
 
 Submit an answer for part 2:  
 - `nog -y 2020 -d 1 --part=2 -s`
