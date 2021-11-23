@@ -29,6 +29,7 @@ do
         if [ $EXIT_CODE -gt 0 ]; then
             FAILED_TESTS+="\n\t${i%.c}"
         fi
+		rm "${i%.c}.out"
     else
         echo -e "$i build ${RED}failed${NC}..."
     fi
