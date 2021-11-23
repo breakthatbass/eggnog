@@ -165,3 +165,28 @@ char *get_session_id(void)
 	}
 	return session_id;
 }
+
+/**
+ * check_cache_answers
+ *
+ * @desc: Check cache for answer file based on year & day.
+ *
+ * @param: `year` - The year of the puzzle info we want.
+ * @param: `day` - The day of the puzzle info we want.
+ * @param: `answer_type` - Determine whether we want to query a right("r") or wrong("w") answer file.
+ *
+ * @return: If answer is found in cache, a potiner to a string, else `NULL`.
+ * */
+char *check_cache_answers(char *year, char *day, char *type)
+{
+	// answer files for 2020 day 1 would look like:
+	// --> right: r20201.txt
+	// --> wrong: w20201.txt
+	char *cdata = NULL;
+
+	cdata = check_cache(year, day, type);
+	return cdata; // if no file, NULL.
+}
+
+
+char *check_wrongs(char *year, char *day, char *answer)
