@@ -1,10 +1,11 @@
 CC=gcc
-CFLAGS=-lcurl -Wall -g -fsanitize=address
+DEBUG_CFLAGS=-lcurl -Wall -g -fsanitize=address
+CFLAGS=-lcurl -Wall
 SRCS=$(wildcard src/*.c)
 BIN=nog
 OBJDIR=build
 OBJ=$(wildcard $(ODJDIR)/*.o)
-OBJECTS=$(patsubst src/%.cpp, $(OBJDIR)/%.o, $(SRCS))
+OBJECTS=$(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 all=$(BIN)
 
@@ -12,11 +13,11 @@ $(OBJDIR)/%.o: src/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN): $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) -o $(BIN)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(BIN)
 
 
 $(OBJDIR):
-	mkdir -p $@
+	mkdir -p $(OBJDIR)
 
 install: $(BIN)
 	cp $(BIN) /usr/local/bin/
