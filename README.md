@@ -1,11 +1,9 @@
 # eggnog 🎄
-`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs and submit your answers through the command line for Linux and Mac OS.
+`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs, puzzle directions, and submit your answers through all in the terminal.
 #
 <img src="eggnog.gif" height="200" alt="Clark Griswold"> 
 
 #
-
-`eggnog` creates a local cache in the `$HOME` directory called `.eggnog`.
 
 ## Installation
 ```
@@ -63,3 +61,9 @@ Or read from `stdin` to provide your answer:
 Submit an answer for part 2:  
 - `nog -y 2020 -d 1 --part=2 -s`
 
+## Cache
+`eggnog` creates a local cache in the `$HOME` directory called `.eggnog`.  
+
+Puzzle directions, inputs, and all right and wrong answer submission attempts are saved. The cache is always checked before querying Advent of Code servers.
+
+Unless the cache is deleted, any query to the servers happens only once.

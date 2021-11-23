@@ -239,7 +239,7 @@ int main(int argc, char **argv)
 
 		}
 		add_to_cache(data, year, day, flag);
-	} else printf("in cache\n");
+	}
 
 	if (p) pretty_print(data);	
 	else printf("%s", data);

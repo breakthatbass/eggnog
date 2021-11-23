@@ -1,7 +1,7 @@
 #ifndef _AOC_H_
 #define _AOC_H_
 
-#define DEBUG 1
+#define DEBUG 0
 #define DEBUG_URL "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input"
 
 #define VERSION "0.0.1"
@@ -32,8 +32,6 @@ char *check_wrongs(char *year, char *day, char *answer);
 unsigned int *is_it_advent(void);
 // print usage and exit
 void print_usage(void);
-// make the url for the task we want to do
-char *make_url(char *day, char *year, char type);
 // make sure one or zero flags are passed
 char *handle_flags(int p, int i, int s);
 // build url based on task
