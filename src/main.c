@@ -37,6 +37,8 @@ int main(int argc, char **argv)
 
 	int v = 0;
 	int h = 0;
+
+	char *url;
 	
 
 	while (1) {
@@ -76,8 +78,7 @@ int main(int argc, char **argv)
 		
 		case 's':
 			// submit and answer
-			if (!optarg) {
-				printf("opt: %s\n", optarg);
+			if (optarg) {
 				submit_answer = optarg;
 			} 
 			s = 1;
@@ -126,7 +127,7 @@ int main(int argc, char **argv)
 	char *flag = handle_flags(p, i, s);
 
 	if (flag == NULL) {
-		fprintf(stderr, "error: only one or zero of: -i, -pd, -s\n");
+		fprintf(stderr, "error: only one or zero of: -i, -p, -d, -s\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -171,12 +172,62 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// because submitting answers takes unique actions, check first
+	if (s) {
+		char *correct = "That's the right answer!";
+		char *wrong = "That's not the right answer.";
+
+		// check if the puzzle has already been answered
+		data = check_cache_answers(year, day, "r");
+		if (data != NULL) {
+			printf("You've already answered this puzzle.");
+			printf("Your answer was %s", data);
+			exit(EXIT_SUCCESS);
+		}
+
+		// not answered, but check if wrong answers have been attempted
+		data = check_wrongs(year, day, submit_answer);
+		if (data != NULL) {
+			// answer was already attempted as was wrong
+			printf("That's not the right answer\n");
+			exit(EXIT_SUCCESS);
+		}
+		// submit an answer attempt
+		url = build_url(year, day, "s");
+		char *header = prep_submit(submit_answer, level);
+
+		data = submit_puzzle_answer(url, session_id, header);
+		
+		// now parse it
+		if (strcmp(parse_submit(data), correct) == 0) {
+			// the answer was correct
+			printf("%s\n", correct);
+			add_to_cache(submit_answer, year, day, "r");
+			// update directions
+			//char *dir_url = build_url(year, day, "p");
+			data = get_input(build_url(year, day, "p"), session_id);
+			add_to_cache(data, year, day, "p");
+			exit(EXIT_SUCCESS);
+		} else if (strcmp(parse_submit(data), wrong) == 0) {
+			printf("%s\n", wrong);
+			add_to_cache(submit_answer, year, day, "w");
+			exit(EXIT_SUCCESS);
+		} else {
+			// just in case internet cuts out or something
+			printf("Error: Problem submitting response.\n");
+			printf("You must wait if you just submitted an answer.\n");
+			printf("Otherwise, check your internet connection.\n");
+			printf("\nOr maybe take a break and eat some 🍪🍪🍪 and 🥛.\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+
 
 	data = check_cache(year, day, flag);
 	
 	if (data == NULL) {
 		// not saved to cache yet
-		char *url = build_url(year, day, flag);
+		url = build_url(year, day, flag);
 
 		if (strcmp(flag, "i") == 0) {
 			// puzzle input
@@ -186,12 +237,7 @@ int main(int argc, char **argv)
 			// puzzle directions
 			data = get_input(url, session_id);
 
-		} else {
-
-			char *header = prep_submit(submit_answer, level);
-			data = submit_puzzle_answer(url, session_id, header); 
 		}
-
 		add_to_cache(data, year, day, flag);
 	} else printf("in cache\n");
 

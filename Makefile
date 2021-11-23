@@ -21,6 +21,10 @@ $(OBJDIR):
 install: $(BIN)
 	cp $(BIN) /usr/local/bin/
 
+.PHONY: tests
+tests:
+	./tests/testrunner
+
 
 clean:
 	rm $(BIN)

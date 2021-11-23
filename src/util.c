@@ -47,6 +47,7 @@ static unsigned int *get_date(void)
  *
  * @return: a string containing either puzzle input, a submission response, or directions
  * */
+/*
 char *make_url(char *day, char *year, char type)
 {
 	static char new_url[URL_BUF] = "https://adventofcode.com/";;
@@ -58,7 +59,7 @@ char *make_url(char *day, char *year, char type)
 	}
 	return new_url;
 }
-
+*/
 
 /**
  * is_it_advent?
@@ -154,8 +155,8 @@ char *build_url(char *year, char *day, char *task)
  * */
 int check_input(char *year, char *day)
 {
-	int d = atoi(day);
-	int y = atoi(year);
+	unsigned int d = atoi(day);
+	unsigned int y = atoi(year);
 	unsigned int *date = get_date();
 
 	if (d < 1 || d > 25) return 1;

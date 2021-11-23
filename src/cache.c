@@ -68,10 +68,18 @@ int add_to_cache(char *data, char *year, char *day, char *type)
 	strcat(cache_file, day);
 	strcat(cache_file, ".txt");
 
-	fp = fopen(cache_file, "w");
+	if (strcmp(type, "w") == 0) { 
+		fp = fopen(cache_file, "a"); // add to wrong answer file
+		size_t len = strlen(data);
+		*(data+len) = '\n';
+		*(data+(len+1)) = 0;
+	}
+	else
+		fp = fopen(cache_file, "w");
 	if (fp == NULL) return 2;
 
 	fprintf(fp, "%s", data);
+		
 	fclose(fp);
 	return 0;
 }
@@ -133,8 +141,12 @@ char *get_session_id(void)
 	static char session_id[SESSION];
 	FILE *fp;
 
+#if DEBUG
+	strcpy(path, "/Users/taylorgamache/.eggnog/sessionid.txt");
+#else
 	strcpy(path, get_cache_path());
 	strcat(path, "sessionid.txt");
+#endif
 
 	if (access(path, F_OK) == 0) {
 		// session id file exists. read into string
@@ -188,5 +200,67 @@ char *check_cache_answers(char *year, char *day, char *type)
 	return cdata; // if no file, NULL.
 }
 
-
+/**
+ * check_wrongs
+ *
+ * @desc: check the cache to see if a `wrong file` exists for a given puzzle.
+ *
+ * @param: `year` - The year of the puzzle info we want.
+ * @param: `day` - The day of the puzzle info we want.
+ * @answer: `answer` - Answer we're trying to submit.
+ *
+ * @return: If answer is in `wrong file`, return `answer`, else `NULL`.
+ * */
 char *check_wrongs(char *year, char *day, char *answer)
+{
+	static char cpath[URL_BUF] = {0};
+	char buf[URL_BUF];
+	FILE *fp;
+
+	if (answer == NULL) return NULL;
+	
+	// get path to file
+	strcpy(cpath, get_cache_path());
+	strcat(cpath, "w");
+	strcat(cpath, year);
+	strcat(cpath, day);
+	strcat(cpath, ".txt");
+
+	// check if file exists yet
+	if (access(cpath, F_OK) == 0) {
+		// file exist. read it into a str:ing and return it
+		fp = fopen(cpath, "r");
+		if (fp == NULL) {
+			perror("fopen");
+			return NULL;
+		}
+		
+		// go through file line by line
+		while (fgets(buf, URL_BUF, fp)) {
+			if (strcmp(answer, buf) == 0) {
+				// wrong answer has already been attempted
+				fclose(fp);
+				return answer;
+			}
+		}
+		// if we're here, the answer hasn't been attempted yet
+		fclose(fp);
+		return NULL;
+	}
+	// if we're here, the answer hasn't been attempted yet
+	// nor does the wrong file for that year/day exist yet
+	return NULL;
+}
+
+/*
+int main()
+{
+	char *poo = check_wrongs("2020", "3", "1234");
+	char *pee = check_wrongs("2020", "3", "601\n");
+	printf("SHOULD BE NULL: %s\n", poo);
+	printf("SHOULD BE STR: %s\n", pee);
+	//free(poo);
+
+	return 0;
+}
+*/

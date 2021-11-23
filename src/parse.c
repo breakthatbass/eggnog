@@ -89,3 +89,38 @@ void pretty_print(char *html)
 		}
 	}
 }
+
+
+// parse the submission response
+char *parse_submit(char *s)
+{
+	static char response[MAXBUF] = {0};
+	char *tmp;
+	const char *START = "<article><p>";
+
+	tmp = strstr(s, START);
+	// NULL probably wont ever happen
+	if (tmp == NULL) return NULL;
+
+	// move pointer ahead to where the message starts
+	size_t len = strlen(START);
+	tmp += len;
+	
+	// keep track of double spaces
+	char last = '0';
+
+	for (int i = 0; *tmp; i++, tmp++) {
+		if (*tmp == ' ' && last == ' ') {
+			response[--i] = 0;
+			break;
+		
+		} else if (*tmp == ';') {
+			response[i] = '.';
+			break;
+		} else {
+			response[i] = *tmp;
+			last = *tmp;
+		}
+	}
+	return response;
+}

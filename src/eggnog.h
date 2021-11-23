@@ -1,7 +1,7 @@
 #ifndef _AOC_H_
 #define _AOC_H_
 
-#define DEBUG 0
+#define DEBUG 1
 #define DEBUG_URL "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input"
 
 #define VERSION "0.0.1"
@@ -22,6 +22,8 @@ char *check_cache(char *year, char *day, char *type);
 int add_to_cache(char *data, char *year, char *day, char *type);
 void create_cache(void);
 char *get_session_id(void);
+char *check_cache_answers(char *year, char *day, char *type);
+char *check_wrongs(char *year, char *day, char *answer);
 
 /****************************************************************************
  *		util.c															    *
@@ -51,5 +53,7 @@ char *prep_submit(char *answer, char *lev);
 
 // print puzzle directions in a colorful and pretty way
 void pretty_print(char *html);
+// parse he submission response html
+char *parse_submit(char *html);
 
 #endif

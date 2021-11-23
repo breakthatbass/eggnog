@@ -53,7 +53,7 @@ void test_teardown(void)
 
 MU_TEST(test_string_eq){
 	mu_assert_string_eq("That's the right answer!", parse_right);
-	mu_assert_string_eq("That's not the right answer; your answer is too high.", parse_wrong);
+	mu_assert_string_eq("That's not the right answer.", parse_wrong);
 }
 
 MU_TEST_SUITE(test_suite)
