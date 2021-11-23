@@ -26,9 +26,9 @@ void test_teardown(void)
 }
 
 MU_TEST(test_string_eq){
-	mu_assert_string_eq("1234\n", s1);
+	mu_assert_string_eq("124\n", s1);
     mu_assert_string_eq(NULL, s2);
-	mu_assert_string_eq("345\n", s3);
+	mu_assert_string_eq("345\n601\n56789\n12\n34\n", s3);
 	mu_assert_string_eq(NULL, s4);
 }
 
