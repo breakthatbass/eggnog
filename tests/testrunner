@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# colors for printing
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+BLUE='\033[1;36m'
+NC='\033[0m' # No Color
+
+FLAGS='-Wall -fsanitize=address -W -pedantic -lcurl' 
+DEPENDENCIES=$(find src/*.c '!' -name 'main.c')
+TESTFILES=$(ls tests/*_tests.c)
+
+# keep track of number of failing tests and test files that fail
+TOTAL_FAILURES=0
+FAILED_TESTS=""
+BUILDS=0  # we just need to know that at least one test compiled
+
+for i in $TESTFILES
+do
+    echo -e "- building ${BLUE}$i${NC}"
+    if gcc $i $DEPENDENCIES $FLAGS -o "${i%.c}.out"; then
+		BUILDS+=1
+        echo -e "- build ${GREEN}succeeded!${NC}"
+        echo "- running file"
+        ./"${i%.c}.out"
+
+        EXIT_CODE=$?  # we store $? in a var because once we access it, it resets, we need it twice
+        (( TOTAL_FAILURES += EXIT_CODE )) # minunit returns the num of failed tests as the exit code in main
+        if [ $EXIT_CODE -gt 0 ]; then
+            FAILED_TESTS+="\n\t${i%.c}"
+        fi
+    else
+        echo -e "$i build ${RED}failed${NC}..."
+    fi
+done
+
+if [ $BUILDS -eq 0 ]; then
+	echo
+	echo
+	echo -e "error: compilation ${RED}failed${NC}."
+	echo "no tests ran."
+	
+else
+
+	# print out results from all tests
+	echo
+	echo "------------------------------- TEST RECAP -------------------------------------"
+	echo
+
+	if [ $TOTAL_FAILURES -gt 0 ]; then
+		echo -e "total failed tests: ${RED}${TOTAL_FAILURES}${NC}\n"
+		echo -e "failed test files: ${BLUE}${FAILED_TESTS}${NC}"
+	else
+		echo -e "all tests passed 🎉🎉🎉"
+	fi
+
+	echo
+	echo "--------------------------------------------------------------------------------"
+	echo
+
+	#rm *.out
+fi
