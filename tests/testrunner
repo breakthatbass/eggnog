@@ -9,11 +9,15 @@ NC='\033[0m' # No Color
 FLAGS='-Wall -fsanitize=address -W -pedantic -lcurl' 
 DEPENDENCIES=$(find src/*.c '!' -name 'main.c')
 TESTFILES=$(ls tests/*_tests.c)
+NUM_FILES=$(ls tests/*_tests.c | nl | wc -l)
+
+echo $NUM_FILES
 
 # keep track of number of failing tests and test files that fail
 TOTAL_FAILURES=0
 FAILED_TESTS=""
 BUILDS=0  # we just need to know that at least one test compiled
+FAILED_BUILDS=""
 
 for i in $TESTFILES
 do
@@ -32,6 +36,7 @@ do
 		rm "${i%.c}.out"
     else
         echo -e "$i build ${RED}failed${NC}..."
+		FAILED_BUILDS+="\n\t${i%.c}"
     fi
 done
 
@@ -51,6 +56,8 @@ else
 	if [ $TOTAL_FAILURES -gt 0 ]; then
 		echo -e "total failed tests: ${RED}${TOTAL_FAILURES}${NC}\n"
 		echo -e "failed test files: ${BLUE}${FAILED_TESTS}${NC}"
+	elif [ "$NUM_FILES" -gt "$BUILDS" ]; then
+		echo -e "build failures:  ${RED}${FAILED_BUILDS}${NC}"
 	else
 		echo -e "all tests passed 🎉🎉🎉"
 	fi
