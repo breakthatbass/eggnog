@@ -37,31 +37,6 @@ static unsigned int *get_date(void)
 
 
 /**
- * make_url
- *
- * @desc: make the URL for the task we want to do
- *
- * @param: `day` - the day of the puzzle we want.
- * @param: `year` - the year of the puzzle we want.
- * @param: `type` - what we want to do -> options: i[nput], s[ubmit], p[uzzle]
- *
- * @return: a string containing either puzzle input, a submission response, or directions
- * */
-/*
-char *make_url(char *day, char *year, char type)
-{
-	static char new_url[URL_BUF] = "https://adventofcode.com/";;
-	strcat(new_url, year);
-	strcat(new_url, "/day/");
-	strcat(new_url, day);
-	if (type == 'i') {
-		strcat(new_url, "/input");
-	}
-	return new_url;
-}
-*/
-
-/**
  * is_it_advent?
  *
  * if Advent of Code is currently happening
@@ -122,7 +97,17 @@ char *handle_flags(int p, int i, int s)
 }
 
 
-// build url based on task
+/**
+ * build_url
+ *
+ * @desc: make the URL for the task we want to do
+ *
+ * @param: `day` - the day of the puzzle we want.
+ * @param: `year` - the year of the puzzle we want.
+ * @param: `type` - what we want to do -> options: i[nput], s[ubmit], p[uzzle]
+ *
+ * @return: a string containing either puzzle input, a submission response, or directions
+ * */
 char *build_url(char *year, char *day, char *task)
 {
 	static char url[URL_BUF];
@@ -171,6 +156,17 @@ int check_input(char *year, char *day)
 	return 0;
 }
 
+
+/**
+ * prep_submit
+ *
+ * @desc: Create the header to send containing puzzle part and answer. If no answer, read from `stdin`.
+ * 
+ * @param: `answer` - The answer to a puzzle.
+ * @param: `lev` - The puzzle part we want to answer.
+ *
+ * @return: Pointer to a str -> the header.
+ * */
 char *prep_submit(char *answer, char *lev)
 {
 	// build url for submitting
