@@ -148,7 +148,7 @@ int check_input(char *year, char *day)
 	
 
 	if (
-		(date[0] < 2015) ||
+		(y < 2015) ||
 		(y == date[0] && date[1] < 12) ||
 		(y > date[0]))
 			return 2;
