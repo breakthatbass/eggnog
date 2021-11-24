@@ -10,7 +10,7 @@ if len(sys.argv) != 2:
 	print("available commands: [debug, undebug]")
 	sys.exit(1)
 
-file = '../src/eggnog.h'
+file = 'src/eggnog.h'
 
 cmd = sys.argv[1]
 
@@ -18,9 +18,10 @@ fp = open(file, 'rt')
 data = fp.read()
 
 if cmd == 'debug':
+	print('\nSetting DEBUG mode\n')
 	data = data.replace('#define DEBUG 0', '#define DEBUG 1')
 elif cmd == 'undebug':
-
+	print('Turning off DEBUG mode')
 	data = data.replace('#define DEBUG 1', '#define DEBUG 0')
 else:
 	sys.exit(1)

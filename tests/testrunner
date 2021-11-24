@@ -11,13 +11,14 @@ DEPENDENCIES=$(find src/*.c '!' -name 'main.c')
 TESTFILES=$(ls tests/*_tests.c)
 NUM_FILES=$(ls tests/*_tests.c | nl | wc -l)
 
-echo $NUM_FILES
 
 # keep track of number of failing tests and test files that fail
 TOTAL_FAILURES=0
 FAILED_TESTS=""
 BUILDS=0  # we just need to know that at least one test compiled
 FAILED_BUILDS=""
+
+./tests/debug.py debug
 
 for i in $TESTFILES
 do
@@ -39,6 +40,8 @@ do
 		FAILED_BUILDS+="\n\t${i%.c}"
     fi
 done
+
+./tests/debug.py undebug
 
 if [ $BUILDS -eq 0 ]; then
 	echo
