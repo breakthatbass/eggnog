@@ -6,8 +6,14 @@
 #
 
 ## Installation
+`eggnog` works on MacOS and Linux.
 ```
 make install
+```
+
+## Run Tests
+```
+make tests
 ```
 
 ## Usage
@@ -31,7 +37,7 @@ If no options are supplied, input is assumed.
     -i, --input
 	Download puzzle input.
 
-	-p, --directions
+    -p, --directions
 	Get puzzle directions.
 
     -s, --submit=<answer>
