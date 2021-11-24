@@ -252,15 +252,3 @@ char *check_wrongs(char *year, char *day, char *answer)
 	return NULL;
 }
 
-/*
-int main()
-{
-	char *poo = check_wrongs("2020", "3", "1234");
-	char *pee = check_wrongs("2020", "3", "601\n");
-	printf("SHOULD BE NULL: %s\n", poo);
-	printf("SHOULD BE STR: %s\n", pee);
-	//free(poo);
-
-	return 0;
-}
-*/
