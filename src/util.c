@@ -86,7 +86,7 @@ char *handle_flags(int p, int i, int s)
 		if (p == 1) return "p";
 		else if (i == 1) return "i";
 		else return "s";
-	} else if (flags > 1) {
+	} else if (flags > 1 || flags == 0) {
 		return NULL;
 	} else {
 		// no flags, input by default
