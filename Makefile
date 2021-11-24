@@ -7,17 +7,18 @@ SRCS=$(wildcard src/*.c)
 OBJECTS=$(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))
 BIN=nog
 
+# get OS
 UNAME := $(shell uname)
 
 
 all: $(BIN)
+	make dependencies
 
 debug: CFLAGS += -g -fsanitize=address
 debug: $(BIN)
 
 
 $(BIN): $(OBJECTS) | $(OBJDIR)
-	make dependencies
 	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
 
 
