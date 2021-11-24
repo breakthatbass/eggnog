@@ -7,13 +7,18 @@ SRCS=$(wildcard src/*.c)
 OBJECTS=$(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))
 BIN=nog
 
+UNAME := $(shell uname)
+
+
 all: $(BIN)
 
 debug: CFLAGS += -g -fsanitize=address
 debug: $(BIN)
 
+
 $(BIN): $(OBJECTS) | $(OBJDIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
+	make dependencies
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
 
 
 $(OBJDIR)/%.o: src/%.c | $(OBJDIR)
@@ -24,7 +29,19 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 install: $(BIN)
-	cp $(BIN) /usr/local/bin/
+	sudo cp $(BIN) /usr/local/bin/
+
+
+dependencies:
+ifeq ($(UNAME),Linux)
+	sudo apt update
+	sudo apt-get install libcurl4-gnutls-dev
+else ifeq ($(UNAME), Darwin)
+	brew install curl
+else
+	@echo "eggnog may not work properly or at all"
+endif
+
 
 .PHONY: tests
 tests:
@@ -32,7 +49,7 @@ tests:
 
 
 clean:
-	rm $(BIN)
 	rm -rf $(OBJDIR)
+	rm $(BIN)
 	rm -rf *.dSYM
 
