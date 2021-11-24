@@ -1,6 +1,9 @@
 #include "minunit/minunit.h"
 #include "../src/eggnog.h"
-#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define TBUF 100
 
 // handle_flags tests
 static char *hf1;
@@ -11,9 +14,25 @@ static char *hf5;
 static char *hf6;
 
 // build_url tests
-static char url1[100];
-static char url2[100];
-static char url3[100];
+static char url1[TBUF];
+static char url2[TBUF];
+static char url3[TBUF];
+
+// check_input
+static int ipt1;
+static int ipt2;
+static int ipt3;
+static int ipt4;
+static int ipt5;
+static int ipt6;
+static int ipt7;
+static int ipt8;
+static int ipt9;
+
+// prep_submit
+static char ps1[TBUF] = {0};
+static char ps2[TBUF] = {0};
+static char ps3[TBUF] = {0};
 
 
 void test_setup(void)
@@ -42,6 +61,30 @@ void test_setup(void)
 	strcpy(url1, build_url("2020", "1", "i"));
 	strcpy(url2, build_url("2020", "2", "s"));
 	strcpy(url3, build_url("hello", "foo", "bar"));
+
+	/**
+	 * int check_input(char *year, char *day)
+	 * */
+	// some tests that should all return 0
+	ipt1 = check_input("2020", "25");
+	ipt2 = check_input("2015", "15");
+	ipt3 = check_input("2017", "1");
+	// some tests that should all return 1
+	ipt4 = check_input("2020", "26");
+	ipt5 = check_input("2015", "0");
+	ipt6 = check_input("2017", "-1");
+	// some tests that should all return 2
+	ipt7 = check_input("2014", "25");
+	ipt8 = check_input("1952", "15");
+	ipt9 = check_input("2098", "1");
+
+	/**
+	 * char *prep_submit(char *answer, char *lev)
+	 * */
+	strcpy(ps1, prep_submit("1234", "1"));
+	strcpy(ps2, prep_submit("789", NULL));
+	strcpy(ps3, prep_submit("456", "2"));
+
 }
 
 void test_teardown(void)
@@ -62,6 +105,26 @@ MU_TEST(test_string_eq){
 	mu_assert_string_eq("https://adventofcode.com/2020/day/1/input", url1);
 	mu_assert_string_eq("https://adventofcode.com/2020/day/2/answer", url2);
 	mu_assert_string_eq("https://adventofcode.com/hello/day/foo", url3);
+	
+	// prep_submit
+	mu_assert_string_eq("level=1&answer=1234", ps1);
+	memset(ps1, 0, TBUF);
+	mu_assert_string_eq("level=1&answer=789", ps2);
+	memset(ps2, 0, TBUF);
+	mu_assert_string_eq("level=2&answer=456", ps3);
+	memset(ps3, 0, TBUF);
+}
+
+MU_TEST(test_check) {
+	mu_check(ipt1 == 0);
+	mu_check(ipt2 == 0);
+	mu_check(ipt3 == 0);
+	mu_check(ipt4 == 1);
+	mu_check(ipt5 == 1);
+	mu_check(ipt6 == 1);
+	mu_check(ipt7 == 2);
+	mu_check(ipt8 == 2);
+	mu_check(ipt9 == 2);
 }
 
 MU_TEST_SUITE(test_suite)
@@ -69,6 +132,7 @@ MU_TEST_SUITE(test_suite)
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 
     MU_RUN_TEST(test_string_eq);
+	MU_RUN_TEST(test_check);
 }
 
 int main() {
