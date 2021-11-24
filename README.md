@@ -1,7 +1,7 @@
 <img src="eggnog.gif" height="200" alt="Clark Griswold"> 
 
 # eggnog 🎄
-`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs, puzzle directions, and submit your answers through all in the terminal.
+`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs, puzzle directions, and submit your answers in the terminal.
 #
 
 ## Installation
