@@ -170,7 +170,8 @@ int check_input(char *year, char *day)
 char *prep_submit(char *answer, char *lev)
 {
 	// build url for submitting
-	static char header[URL_BUF] = "level=";
+	static char header[URL_BUF] = {0};
+	strcpy(header, "level=");
 	if (lev) strcat(header, lev);
 	else strcat(header, "1");
 	strcat(header, "&answer=");
