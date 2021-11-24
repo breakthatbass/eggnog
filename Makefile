@@ -1,19 +1,23 @@
 CC=gcc
-DEBUG_CFLAGS=-lcurl -Wall -g -fsanitize=address
-CFLAGS=-lcurl -Wall
-SRCS=$(wildcard src/*.c)
-BIN=nog
+DEBUG_CFLAGS=-Wall -g -fsanitize=address
+CFLAGS=-Wall
+LDFLAGS=-lcurl
 OBJDIR=build
-OBJ=$(wildcard $(ODJDIR)/*.o)
+SRCS=$(wildcard src/*.c)
 OBJECTS=$(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))
+BIN=nog
 
-all=$(BIN)
+all: $(BIN)
+
+debug: CFLAGS += -g -fsanitize=address
+debug: $(BIN)
+
+$(BIN): $(OBJECTS) | $(OBJDIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
+
 
 $(OBJDIR)/%.o: src/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(BIN)
 
 
 $(OBJDIR):
