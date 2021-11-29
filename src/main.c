@@ -176,6 +176,12 @@ int main(int argc, char **argv)
 	if (s) {
 		char *correct = "That's the right answer!";
 		char *wrong = "That's not the right answer.";
+		char answer_buf[URL_BUF] = {0};
+
+		if (submit_answer == NULL) {
+			fgets(answer_buf, URL_BUF, stdin);
+			answer_buf[strcspn(answer_buf, "\r\n")] = 0;
+		} else strcpy(answer_buf, submit_answer);
 
 		// check if the puzzle has already been answered
 		data = check_cache_answers(year, day, "r");
@@ -186,7 +192,7 @@ int main(int argc, char **argv)
 		}
 
 		// not answered, but check if wrong answers have been attempted
-		data = check_wrongs(year, day, submit_answer);
+		data = check_wrongs(year, day, answer_buf);
 		if (data != NULL) {
 			// answer was already attempted as was wrong
 			printf("That's not the right answer\n");
@@ -194,7 +200,8 @@ int main(int argc, char **argv)
 		}
 		// submit an answer attempt
 		url = build_url(year, day, "s");
-		char *header = prep_submit(submit_answer, level);
+		
+		char *header = prep_submit(answer_buf, level);
 
 		data = submit_puzzle_answer(url, session_id, header);
 		
@@ -202,7 +209,7 @@ int main(int argc, char **argv)
 		if (strcmp(parse_submit(data), correct) == 0) {
 			// the answer was correct
 			printf("%s\n", correct);
-			add_to_cache(submit_answer, year, day, "r");
+			add_to_cache(answer_buf, year, day, "r");
 			// update directions
 			//char *dir_url = build_url(year, day, "p");
 			data = get_input(build_url(year, day, "p"), session_id);
@@ -210,7 +217,7 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		} else if (strcmp(parse_submit(data), wrong) == 0) {
 			printf("%s\n", wrong);
-			add_to_cache(submit_answer, year, day, "w");
+			add_to_cache(answer_buf, year, day, "w");
 			exit(EXIT_SUCCESS);
 		} else {
 			// just in case internet cuts out or something

@@ -173,23 +173,14 @@ int check_input(char *year, char *day)
  * */
 char *prep_submit(char *answer, char *lev)
 {
+	printf("prep_submit: /%s/\n", answer);
 	// build url for submitting
 	static char header[URL_BUF] = {0};
 	strcpy(header, "level=");
 	if (lev) strcat(header, lev);
 	else strcat(header, "1");
 	strcat(header, "&answer=");
-	if (answer)
-		strcat(header, answer);
-	else {
-		// we read from stdin
-		char buf[URL_BUF] = {0};
-		fgets(buf, URL_BUF, stdin);
-		buf[strcspn(buf, "\r\n")] = 0;
-
-		printf("%s\n", buf);
-		strcat(header, buf);
-	}
+	strcat(header, answer);
 	return header;
 }
 

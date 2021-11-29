@@ -77,6 +77,9 @@ char *get_input(char *url, char *session_id)
         char cookie[SESSION] = "session=";
 	    strcat(cookie, session_id);
 		curl_easy_setopt(curl, CURLOPT_COOKIE, cookie);
+
+		// silence warnings when running tests
+		session_id = NULL;
 #endif
         // don't need this anymore and setting to NULL silences warnings when testing
         session_id = NULL;
