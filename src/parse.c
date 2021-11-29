@@ -50,14 +50,12 @@ void pretty_print(char *html)
 
 	// if tmp is still null...
 	if (tmp2 == NULL) {
-		printf("session id no longer viable\n");
-		printf("run\n\t`rm $HOME/.eggnog/sessionid.txt\n");
-		printf("and rerun the program with a new session id\n");
+		printf("Problem getting puzzle directions\n");
+		printf("There is likely a bug in the parser!\n");
 		exit(EXIT_FAILURE);
 	}
     // get byte distance from start to end
 	long end = (tmp2 - tmp)*sizeof(*tmp);
-	printf("%ld\n", end);
 
 	char tag[TAGSIZE] = {0};
 	int j = 0;
