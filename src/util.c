@@ -76,6 +76,10 @@ unsigned int *is_it_advent(void)
  * */
 char *handle_flags(int p, int i, int s)
 {
+	// make sure only ones are used
+	if (p > 1 || i > 1 || s > 1)
+		return NULL;
+
 	int flags = 0;
 	if (p == 1) flags++;
 	if (i == 1) flags++;
@@ -86,9 +90,9 @@ char *handle_flags(int p, int i, int s)
 		if (p == 1) return "p";
 		else if (i == 1) return "i";
 		else return "s";
-	} else if (flags > 1 || flags == 0) {
+	} else if (flags > 1) {
 		return NULL;
-	} else {
+	} else if (flags == 0){
 		// no flags, input by default
 		return "i";
 	}

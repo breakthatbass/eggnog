@@ -97,7 +97,7 @@ MU_TEST(test_string_eq){
 	mu_assert_string_eq("s", hf1);
 	mu_assert_string_eq("i", hf2);
 	mu_assert_string_eq("p", hf3);
-	mu_assert_string_eq(NULL, hf4);
+	mu_assert_string_eq("i", hf4);
 	mu_assert_string_eq(NULL, hf5);
 	mu_assert_string_eq(NULL, hf6);
 
