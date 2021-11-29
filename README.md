@@ -1,7 +1,11 @@
 <img src="eggnog.gif" height="200" alt="Clark Griswold"> 
 
 # eggnog 🎄
-`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs, puzzle directions, and submit answers in the terminal.
+Yet another Advent of Code CLI tool...
+
+`eggnog` is a tool that allows you to download [Advent of Code](https://adventofcode.com) puzzle inputs, puzzle directions, and submit answers in the terminal. 
+
+It caches everything - even when a wrong answer is submitted.
 #
 
 ## Installation
@@ -72,3 +76,8 @@ Submit an answer for part 2:
 Puzzle directions, inputs, and all right and wrong answer submission attempts are saved. The cache is always checked before querying Advent of Code servers.
 
 Unless the cache is deleted, any query to the servers happens only once.
+
+## More Info
+There are a lot of these tools. And personally, I feel the only feature really worth having is being able to grab input from the terminal which can easily be done in a short and simple home Python/Ruby/Bash script. But I wanted to learn a bit more about using the [`libcurl`](https://curl.se/libcurl/) C library for http requests.  
+
+If you would like to contribute, feel free to make a pull request.

@@ -47,11 +47,13 @@ void pretty_print(char *html)
     if (tmp2 == NULL) {
         tmp2 = strstr(html, "<form method=\"post\"");
     }
+	printf("%s\n", tmp2);
 
 	// if tmp is still null...
 	if (tmp2 == NULL) {
 		printf("Problem getting puzzle directions\n");
-		printf("There is likely a bug in the parser!\n");
+		printf("Either they were downloaded incorrectly to the cache, \
+				or there is likely a bug in the parser!\n");
 		exit(EXIT_FAILURE);
 	}
     // get byte distance from start to end
