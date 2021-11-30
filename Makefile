@@ -7,9 +7,6 @@ SRCS=$(wildcard src/*.c)
 OBJECTS=$(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))
 BIN=nog
 
-# get OS
-UNAME := $(shell uname)
-
 
 all: $(BIN)
 	make dependencies
@@ -30,19 +27,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 install: $(BIN)
-	sudo cp $(BIN) /usr/local/bin/
-
-
-dependencies:
-ifeq ($(UNAME),Linux)
-	sudo apt update
-	sudo apt-get install libcurl4-gnutls-dev
-else ifeq ($(UNAME), Darwin)
-	brew install curl
-else
-	@echo "eggnog may not work properly or at all"
-endif
-
+	cp $(BIN) /usr/local/bin/
 
 .PHONY: tests
 tests:
