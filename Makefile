@@ -9,7 +9,6 @@ BIN=nog
 
 
 all: $(BIN)
-	make dependencies
 
 debug: CFLAGS += -g -fsanitize=address
 debug: $(BIN)
