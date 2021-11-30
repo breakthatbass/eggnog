@@ -9,16 +9,34 @@ It caches everything - even when a wrong answer is submitted.
 #
 
 ## Installation
-`eggnog` works on MacOS and Linux.
+`eggnog` works on MacOS and Linux.  
+It relies on the [`libcurl`](https://curl.se/libcurl/) C library for http requests. Chances are it's already installed and you don't have to do anything. But if it doesn't work you may have to download it.  
+
+**MacOS**  
+```
+brew install curl
+```
+**Linux**  
+```
+sudo apt update
+sudo apt-get install liburl4-gnutls-dev
+# or whatever packager you use
+```
+Install to `/usr/local/bin/`
 ```
 make install
 ```
-
+or if you'd rather it be in `~/.local/bin/`.
+```
+make
+HOME/.local/bin/
+```
+#
 ## Run Tests
 ```
 make tests
 ```
-
+#
 ## Usage
 ```
 nog [--day=<day> --year=<year>] [OPTION] 
