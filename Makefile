@@ -26,7 +26,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 install: $(BIN)
-	cp $(BIN) /usr/local/bin/
+	cp $(BIN) $(NOG_INSTALL_PATH)
 
 .PHONY: tests
 tests:
