@@ -48,7 +48,6 @@ int main(int argc, char **argv)
 		static struct option long_options[] = {
 			{"year", required_argument, NULL, 'y'},
 			{"day", required_argument, NULL, 'd'},
-			{"part", required_argument, NULL, 'l'},
 			{"level", required_argument, NULL, 'l'},
 			{"submit", optional_argument, NULL, 's'},
 			{"input", no_argument, NULL, 'i'},
