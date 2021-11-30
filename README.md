@@ -22,14 +22,15 @@ sudo apt update
 sudo apt-get install liburl4-gnutls-dev
 # or whatever packager you use
 ```
-Install to `/usr/local/bin/`
+
+Set the `NOG_INSTALL_PATH` environment variable.
+```
+# an installation option...
+export NOG_INSTALL_PATH=/usr/local/bin
+```
+Then run
 ```
 make install
-```
-or if you'd rather it be in `~/.local/bin/`.
-```
-make
-HOME/.local/bin/
 ```
 #
 ## Run Tests
