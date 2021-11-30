@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 			{"year", required_argument, NULL, 'y'},
 			{"day", required_argument, NULL, 'd'},
 			{"part", required_argument, NULL, 'l'},
+			{"level", required_argument, NULL, 'l'},
 			{"submit", optional_argument, NULL, 's'},
 			{"input", no_argument, NULL, 'i'},
 			{"directions", no_argument, NULL, 'p'},
