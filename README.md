@@ -97,6 +97,9 @@ Puzzle directions, inputs, and all right and wrong answer submission attempts ar
 
 Unless the cache is deleted, any query to the servers happens only once.
 
+## To Do
+- WHen submitting an answer, if it's wrong, record the time. Require at least a minute to pass before sending another answer attempt.
+
 ## Known Bugs
 - submitting part 2 to a puzzle doesn't work when reading from `stdin`.
 
