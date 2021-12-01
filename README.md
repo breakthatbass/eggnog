@@ -10,6 +10,17 @@ It caches everything - even when a wrong answer is submitted.
 
 ## Installation
 `eggnog` works on MacOS and Linux.  
+
+Set the `NOG_INSTALL_PATH` environment variable.
+```
+# an installation option...
+export NOG_INSTALL_PATH=/usr/local/bin
+```
+Then run
+```
+make install
+```
+### Dependencies
 It relies on the [`libcurl`](https://curl.se/libcurl/) C library for http requests. Chances are it's already installed and you don't have to do anything. But if it doesn't work you may have to download it.  
 
 **MacOS**  
@@ -21,16 +32,6 @@ brew install curl
 sudo apt update
 sudo apt-get install liburl4-gnutls-dev
 # or whatever packager you use
-```
-
-Set the `NOG_INSTALL_PATH` environment variable.
-```
-# an installation option...
-export NOG_INSTALL_PATH=/usr/local/bin
-```
-Then run
-```
-make install
 ```
 #
 ## Run Tests
