@@ -103,4 +103,6 @@ Unless the cache is deleted, any query to the servers happens only once.
 ## Known Bugs
 - submitting part 2 to a puzzle doesn't work when reading from `stdin`.
 
-If you would like to contribute, feel free to make a pull request.
+## Contributing
+If you would like to contribute, feel free to make a pull request.  
+Or if you find a bug, open an issue.
