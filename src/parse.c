@@ -47,7 +47,6 @@ void pretty_print(char *html)
     if (tmp2 == NULL) {
         tmp2 = strstr(html, "<form method=\"post\"");
     }
-	printf("%s\n", tmp2);
 
 	// if tmp is still null...
 	if (tmp2 == NULL) {

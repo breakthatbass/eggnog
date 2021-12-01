@@ -24,8 +24,6 @@ static unsigned int *get_date(void)
 	d[0] = tm.tm_year + 1900;
 	d[1] = tm.tm_mon + 1;
 	d[2] = tm.tm_mday;
-	d[3] = tm.tm_hour;
-	d[4] = tm.tm_minute
 
 	/**
 	 *  return array:
