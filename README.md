@@ -97,7 +97,7 @@ Puzzle directions, inputs, and all right and wrong answer submission attempts ar
 
 Unless the cache is deleted, any query to the servers happens only once.
 
-## More Info
-There are a lot of these tools. And personally, I feel the only feature really worth having is being able to grab input from the terminal which can easily be done in a short and simple home Python/Ruby/Bash script. But I wanted to learn a bit more about using the [`libcurl`](https://curl.se/libcurl/) C library for http requests.  
+## Known Bugs
+- submitting part 2 to a puzzle doesn't work when reading from `stdin`.
 
 If you would like to contribute, feel free to make a pull request.
