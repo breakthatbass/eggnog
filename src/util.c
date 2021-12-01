@@ -173,7 +173,6 @@ int check_input(char *year, char *day)
  * */
 char *prep_submit(char *answer, char *lev)
 {
-	printf("prep_submit: /%s/\n", answer);
 	// build url for submitting
 	static char header[URL_BUF] = {0};
 	strcpy(header, "level=");
