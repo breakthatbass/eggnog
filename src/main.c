@@ -208,11 +208,16 @@ int main(int argc, char **argv)
 
 		data = submit_puzzle_answer(url, session_id, header);
 		
+		char level_data[URL_BUF] = {0};
+		strcpy(level_data, day);
+		strcpy(level_data, "-");
+		strcpy(level_data, level);
+
 		// now parse it
 		if (strcmp(parse_submit(data), correct) == 0) {
 			// the answer was correct
 			printf("%s\n", correct);
-			add_to_cache(answer_buf, year, day, "r");
+			add_to_cache(answer_buf, year, level_data, "r");
 			// update directions
 			//char *dir_url = build_url(year, day, "p");
 			data = get_input(build_url(year, day, "p"), session_id);
@@ -220,7 +225,7 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		} else if (strcmp(parse_submit(data), wrong) == 0) {
 			printf("%s\n", wrong);
-			add_to_cache(answer_buf, year, day, "w");
+			add_to_cache(answer_buf, year, level_data, "w");
 			exit(EXIT_SUCCESS);
 		} else {
 			// just in case internet cuts out or something
