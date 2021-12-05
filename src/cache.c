@@ -186,17 +186,24 @@ char *get_session_id(void)
  * @param: `year` - The year of the puzzle info we want.
  * @param: `day` - The day of the puzzle info we want.
  * @param: `answer_type` - Determine whether we want to query a right("r") or wrong("w") answer file.
+ * @param: `level` - puzzle part (1 or 2).
  *
  * @return: If answer is found in cache, a potiner to a string, else `NULL`.
  * */
-char *check_cache_answers(char *year, char *day, char *type)
+char *check_cache_answers(char *year, char *day, char *type, char *level)
 {
 	// answer files for 2020 day 1 would look like:
-	// --> right: r20201.txt
-	// --> wrong: w20201.txt
+	// --> right: r20201-1.txt
+	// --> wrong: w20201-1.txt
+	// the -1 indicate that it's for part 1
 	char *cdata = NULL;
+	// add the level to the end
+	char level_data[URL_BUF] = {0};
+	strcpy(level_data, day);
+	strcat(level_data, "-");
+	strcat(level_data, level);
 
-	cdata = check_cache(year, day, type);
+	cdata = check_cache(year, level_data, type);
 	return cdata; // if no file, NULL.
 }
 
@@ -211,7 +218,7 @@ char *check_cache_answers(char *year, char *day, char *type)
  *
  * @return: If answer is in `wrong file`, return `answer`, else `NULL`.
  * */
-char *check_wrongs(char *year, char *day, char *answer)
+char *check_wrongs(char *year, char *day, char *answer, char *level)
 {
 	static char cpath[URL_BUF] = {0};
 	char buf[URL_BUF];
@@ -224,6 +231,8 @@ char *check_wrongs(char *year, char *day, char *answer)
 	strcat(cpath, "w");
 	strcat(cpath, year);
 	strcat(cpath, day);
+	strcat(cpath, "-");
+	strcat(cpath, level);
 	strcat(cpath, ".txt");
 
 	// check if file exists yet

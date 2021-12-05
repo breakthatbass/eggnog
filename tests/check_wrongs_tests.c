@@ -10,13 +10,13 @@ static char *s4;
 void test_setup(void)
 {
 	// should be NULL
-	s1 = check_wrongs("2020", "1", "1234\n");
+	s1 = check_wrongs("2020", "1", "1234\n", "1");
 	// should be NULL
-	s2 = check_wrongs("2020", "3", "1");
+	s2 = check_wrongs("2020", "3", "1", "2");
 	// should be "12"
-	s3 = check_wrongs("2020", "3", "12\n");
+	s3 = check_wrongs("2020", "3", "12\n", "2");
 	// should be null
-	s4 = check_wrongs("2020", "3", NULL);
+	s4 = check_wrongs("2020", "3", NULL, "2");
 }
 
 void test_teardown(void)

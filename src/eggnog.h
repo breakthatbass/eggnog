@@ -22,8 +22,8 @@ char *check_cache(char *year, char *day, char *type);
 int add_to_cache(char *data, char *year, char *day, char *type);
 void create_cache(void);
 char *get_session_id(void);
-char *check_cache_answers(char *year, char *day, char *type);
-char *check_wrongs(char *year, char *day, char *answer);
+char *check_cache_answers(char *year, char *day, char *type, char *level);
+char *check_wrongs(char *year, char *day, char *answer, char *level);
 
 /****************************************************************************
  *		util.c															    *
