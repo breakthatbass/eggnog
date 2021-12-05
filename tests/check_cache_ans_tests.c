@@ -10,13 +10,13 @@ static char *s4;
 void test_setup(void)
 {
     // exists
-    s1 = check_cache_answers("2020", "1", "r");
+    s1 = check_cache_answers("2020", "1", "r", "1");
     // doesn't exist
-    s2 = check_cache_answers("2020", "2", "r");
+    s2 = check_cache_answers("2020", "2", "r", "1");
     // exists
-    s3 = check_cache_answers("2020", "3", "w");
+    s3 = check_cache_answers("2020", "3", "w", "2");
     // deosn't exist
-    s4 = check_cache_answers("2020", "4", "w");
+    s4 = check_cache_answers("2020", "4", "w", "2");
 }
 
 void test_teardown(void)
