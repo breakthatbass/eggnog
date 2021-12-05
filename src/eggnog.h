@@ -4,7 +4,7 @@
 #define DEBUG 0
 #define DEBUG_URL "https://raw.githubusercontent.com/breakthatbass/advent_of_code2020/main/day01/input"
 
-#define VERSION "0.0.1"
+#define VERSION "0.0.2"
 
 #define URL_BUF 75      // general purpose string buffer
 #define MAXBUF 1024     // larger gen purpose string buffer

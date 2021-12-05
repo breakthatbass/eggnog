@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	// puzzle level (part 1 or part 2)
 	// defaults to part 1, required for part 2
 	int l = 0;
-	char *level = NULL;
+	char *level = "1";
 	
 	int p = 0;	// puzzle directions
 	int i = 0;	// pizzle input
@@ -97,6 +97,9 @@ int main(int argc, char **argv)
 		case 'l':
 			// indicate part one or two
 			level = optarg;
+			if (optarg) {
+				level = optarg;
+			}
 			l = 1;
 			break;
 
@@ -184,7 +187,7 @@ int main(int argc, char **argv)
 		} else strcpy(answer_buf, submit_answer);
 
 		// check if the puzzle has already been answered
-		data = check_cache_answers(year, day, "r");
+		data = check_cache_answers(year, day, "r", level);
 		if (data != NULL) {
 			printf("You've already answered this puzzle.");
 			printf("Your answer was %s", data);
@@ -192,7 +195,7 @@ int main(int argc, char **argv)
 		}
 
 		// not answered, but check if wrong answers have been attempted
-		data = check_wrongs(year, day, answer_buf);
+		data = check_wrongs(year, day, answer_buf, level);
 		if (data != NULL) {
 			// answer was already attempted as was wrong
 			printf("That's not the right answer\n");
