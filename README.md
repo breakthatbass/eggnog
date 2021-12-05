@@ -88,7 +88,7 @@ Or read from `stdin` to provide your answer:
 - `./myprogram | nog -y 2020 -d 1 -s`  
 
 Submit an answer for part 2:  
-- `nog -y 2020 -d 1 --part=2 -s`
+- `nog -y 2020 -d 1 -l 2 -s`
 
 ## Cache
 `eggnog` creates a local cache in the `$HOME` directory called `.eggnog`.  
