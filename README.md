@@ -69,7 +69,7 @@ If no options are supplied, input is assumed.
 
     -l <puzzle part>, --level=<puzzle part>
 	Indicate whether submitting an answer to part 1 or part 2 of a puzzle.
-	If left out, part 1 is assumed. Required for submitting part 2 answers.
+	If left out, part 1 is assumed. **Required for submitting part 2 answers**.
 ```
 Getting the puzzle input will print it to the terminal in the same way it would with `curl`.
 The purpose of that is because many advent of code solutions read from `stdin` rather than a hardcoded file name in the code.
@@ -101,7 +101,7 @@ Unless the cache is deleted, any query to the servers happens only once.
 - WHen submitting an answer, if it's wrong, record the time. Require at least a minute to pass before sending another answer attempt.
 
 ## Known Bugs
-- submitting part 2 to a puzzle doesn't work when reading from `stdin`.
+- The bug that prevented from submitting answers to part 2 has been fixed ✔️
 
 ## Contributing
 If you would like to contribute, feel free to make a pull request.  
