@@ -30,7 +30,7 @@ brew install curl
 **Linux**  
 ```
 sudo apt update
-sudo apt-get install liburl4-gnutls-dev
+sudo apt-get install libcurl4-gnutls-dev
 # or whatever packager you use
 ```
 #
